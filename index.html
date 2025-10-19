@@ -5,206 +5,14 @@
   <title>Time Regulus</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-dark: #0e0f11;
-      --card-bg: rgba(120, 110, 255, 0.38);
-      --accent: #00ffe0;
-      --text-main: #e0e0e0;
-      --text-sub: #999;
-      --btn-bg: #00ffe0;
-      --btn-text: #000;
-      --deep-green: #134d33;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
-      background: var(--bg-dark);
-      color: var(--text-main);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    input:focus, select:focus, button:focus {
-      outline: 2px solid var(--accent);
-      box-shadow: 0 0 6px var(--accent);
-    }
-
-    h1.fkz {
-      font-size: 48px;
-      color: var(--accent);
-      text-shadow: 0 0 12px var(--accent);
-      margin-top: 60px;
-      letter-spacing: 4px;
-    }
-
-    .subtitle {
-      font-size: 16px;
-      color: var(--text-sub);
-      margin-bottom: 40px;
-    }
-
-    .mode-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      border-radius: 16px;
-      padding: 30px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
-      margin-top: 40px;
-    }
-
-    .deep-green {
-      background-color: var(--deep-green);
-    }
-
-    .input-group {
-      margin-top: 12px;
-      margin-bottom: 20px;
-    }
-
-    input[type="datetime-local"] {
-      width: 220px;
-    }
-
-    .seconds-select {
-      width: 80px;
-      margin-top: 8px;
-    }
-
-    #errorDirection {
-      width: 160px;
-      display: inline-block;
-      margin-left: 8px;
-      color: red;
-    }
-
-    input, select {
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-      background-color: #1f1f2f;
-      color: var(--text-main);
-    }
-
-    .action-btn {
-      background-color: var(--btn-bg);
-      color: var(--btn-text);
-      border: none;
-      padding: 12px 24px;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 20px;
-      box-shadow: 0 4px 12px rgba(0,255,224,0.3);
-      transition: transform 0.2s ease;
-    }
-
-    .action-btn:hover {
-      transform: scale(1.05);
-    }
-
-    .back-btn {
-      background: none;
-      border: none;
-      color: var(--accent);
-      font-size: 16px;
-      margin-bottom: 20px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    .back-btn:hover {
-      transform: scale(1.05);
-    }
-
-    .result-box {
-      margin-top: 30px;
-      font-size: 18px;
-      line-height: 1.6;
-      color: var(--accent);
-      text-align: center;
-      margin: 20px 0;
-    }
-
-    .result-box p {
-      margin: 20px 0;
-    }
-
-    .flex-wrap {
-      display: flex;
-      flex-direction: row;
-      gap: 6px;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      margin-bottom: 24px;
-    }
-
-    .unit-input {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      margin-bottom: 12px;
-      flex: 1 1 auto;
-      min-width: 60px;
-    }
-
-    .unit-input input {
-      width: 30px;
-      min-width: 30px;
-      max-width: 30px;
-      padding: 4px 6px;
-      font-size: 14px;
-      border-radius: 6px;
-      border: none;
-      background-color: #1f1f2f;
-      color: var(--text-main);
-      text-align: right;
-    }
-
-    .unit-label {
-      font-size: 14px;
-      color: var(--text-main);
-      white-space: nowrap;
-      margin-left: 2px;
-    }
-
-    #lockScreen {
-      text-align: center;
-      margin-top: 100px;
-    }
-
-    #lockScreen input {
-      width: 100px;
-      text-align: center;
-      padding: 10px;
-      font-size: 18px;
-      border-radius: 8px;
-      border: none;
-      color: var(--text-main);
-    }
-
-    #modeSelect {
-      padding-top: 80px;
-    }
-
-    #errorMode, #correctionMode {
-      padding-top: 60px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
 </head>
-
 <body>
-  <!-- 🔐 ロック画面：初期パスワード入力 -->
+  <!-- 🔐 ロック画面 -->
   <div id="lockScreen">
     <h1 class="fkz">Time Regulus</h1>
-    <p class="subtitle" font-size: 15px;">タイム　レグルス</p>
+    <p class="subtitle">タイム　レグルス</p>
     <label for="passcode">暗証番号を入力：</label><br>
     <input type="password" id="passcode" placeholder="例：1234" tabindex="1">
     <button class="action-btn" onclick="checkPass()" tabindex="2">開く</button>
@@ -212,7 +20,7 @@
     <p class="subtitle">- produced by H.Fukazu -</p>
   </div>
 
-  <!-- 🔁 モード選択画面：誤差 or 補正 -->
+  <!-- 🔁 モード選択画面 -->
   <div id="modeSelect" style="display:none; text-align:center;">
     <h1 class="fkz">Time Regulus</h1>
     <p class="subtitle">- モード選択 -</p>
@@ -222,12 +30,11 @@
     </div>
   </div>
 
-  <!-- 🧮 誤差計算モード：標準時刻と表示時刻の差分を計算 -->
+  <!-- 🧮 誤差計算モード -->
   <div id="errorMode" class="mode-card" style="display:none;">
     <button class="back-btn" onclick="backToModeSelect()" tabindex="5">← モード選択に戻る</button>
     <p class="subtitle">誤差時刻の計算</p>
 
-    <!-- 🕒 標準時刻入力 -->
     <div class="input-group">
       <label for="standardTime">標準時刻:</label><br>
       <input type="datetime-local" id="standardTime" step="60" tabindex="6">
@@ -236,7 +43,6 @@
       </select>
     </div>
 
-    <!-- 🕒 表示時刻入力 -->
     <div class="input-group">
       <label for="displayTime">表示時刻:</label><br>
       <input type="datetime-local" id="displayTime" step="60" tabindex="8">
@@ -245,13 +51,10 @@
       </select>
     </div>
 
-    <!-- 🧮 計算ボタン -->
     <button class="action-btn" onclick="calculateError()" tabindex="10">誤差時間を計算</button>
 
-    <!-- 📊 結果表示 -->
     <div id="result" class="result-box"></div>
 
-    <!-- 🔁 補正モードへの切り替えプレビュー -->
     <div id="correctionPreview">
       <div id="correctionResult"></div>
       <div id="toReverseButton" style="display: none; margin-top: 20px;">
@@ -260,12 +63,11 @@
     </div>
   </div>
 
-  <!-- 🔧 補正モード：誤差から標準時刻を逆算 -->
+  <!-- 🔧 補正モード -->
   <div id="correctionMode" class="mode-card deep-green" style="display:none;">
     <button class="back-btn" onclick="backToModeSelect()" tabindex="12">← モード選択に戻る</button>
     <p class="subtitle">補正時刻の計算</p>
 
-    <!-- ⏱️ 誤差入力（□日□時□分□秒形式） -->
     <label>補正に使う誤差：</label>
     <div class="flex-wrap">
       <div class="unit-input">
@@ -286,7 +88,6 @@
       </div>
     </div>
 
-    <!-- 🔽 誤差方向セレクト（進んでいる／遅れている） -->
     <div class="input-group">
       <label for="errorDirection" style="display:inline-block;">表示時刻は標準時刻より：</label>
       <select id="errorDirection" onchange="reverseCalculate()" tabindex="17">
@@ -295,7 +96,6 @@
       </select>
     </div>
 
-    <!-- 🕒 表示時刻入力 -->
     <div class="input-group">
       <label for="reverseDisplayTime">表示時刻:</label><br>
       <input type="datetime-local" id="reverseDisplayTime" step="60" tabindex="18">
@@ -304,197 +104,17 @@
       </select>
     </div>
 
-    <!-- 🧮 補正計算ボタン -->
     <button class="action-btn" onclick="reverseCalculate()" tabindex="20">補正時刻を計算</button>
 
-    <!-- 📊 補正結果表示 -->
     <div id="reverseResult" class="result-box"></div>
   </div>
 
-  <!-- 🧠 ロジックスクリプト開始 -->
+  <script src="script.js" defer></script>
   <script>
-    let lastError = null;
-    let hasCalculated = false; // ✅ 初回計算済みかどうか判定用
-
-    // 🔐 パスワード認証処理
-    function checkPass() {
-      const inputField = document.getElementById("passcode");
-      const input = inputField.value;
-      const correct = "164";
-      const errorMessage = document.getElementById("error");
-
-      if (input === correct) {
-        document.getElementById("lockScreen").style.display = "none";
-        document.getElementById("modeSelect").style.display = "block";
-        inputField.blur();
-        inputField.style.border = "";
-        errorMessage.innerText = "";
-      } else {
-        errorMessage.innerText = "暗証番号が違います";
-        inputField.style.border = "2px solid red";
-      }
-    }
-
-    // ⌨️ 起動時：パスワード欄に自動フォーカス＋Enterキー対応＋秒セレクト生成＋自動再計算イベント
-    document.addEventListener("DOMContentLoaded", function () {
-      const passInput = document.getElementById("passcode");
-      if (passInput) {
-        passInput.focus();
-        passInput.addEventListener("keydown", function (e) {
-          if (e.key === "Enter") {
-            checkPass();
-          }
-        });
-      }
-
-      populateSeconds("standardSeconds");
-      populateSeconds("displaySeconds");
-      populateSeconds("reverseDisplaySeconds");
-
-      document.getElementById("reverseDisplayTime").addEventListener("input", function () {
-        if (hasCalculated) reverseCalculate();
-      });
-      document.getElementById("reverseDisplaySeconds").addEventListener("change", function () {
-        if (hasCalculated) reverseCalculate();
-      });
-    });
-
-    // ⏱️ 秒セレクト生成（0〜59秒）
-    function populateSeconds(selectId) {
-      const select = document.getElementById(selectId);
-      if (!select || select.options.length > 1) return;
-      for (let i = 0; i <= 59; i++) {
-        const option = document.createElement("option");
-        option.value = i;
-        option.text = `${String(i).padStart(2, '0')}秒`;
-        select.appendChild(option);
-      }
-    }
-
-    // 🔁 モード切り替え
-    function showErrorMode() {
-      document.getElementById("modeSelect").style.display = "none";
-      document.getElementById("errorMode").style.display = "block";
-    }
-
-    function showCorrectionMode() {
-      document.getElementById("modeSelect").style.display = "none";
-      document.getElementById("correctionMode").style.display = "block";
-    }
-
-    function backToModeSelect() {
-      document.getElementById("errorMode").style.display = "none";
-      document.getElementById("correctionMode").style.display = "none";
-      document.getElementById("modeSelect").style.display = "block";
-    }
-
-    // 🧮 誤差計算ロジック
-    function calculateError() {
-      const standardInput = document.getElementById("standardTime").value;
-      const displayInput = document.getElementById("displayTime").value;
-      const standardSec = Number(document.getElementById("standardSeconds").value || 0);
-      const displaySec = Number(document.getElementById("displaySeconds").value || 0);
-
-      if (!standardInput || !displayInput) {
-        document.getElementById("result").innerText = "両方の時刻を入力してください";
-        return;
-      }
-
-      const standard = new Date(standardInput);
-      const display = new Date(displayInput);
-      standard.setSeconds(standardSec);
-      display.setSeconds(displaySec);
-
-      const diffMs = Math.abs(standard - display);
-      const isFast = display < standard;
-
-      const totalSeconds = Math.floor(diffMs / 1000);
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-
-      const resultElement = document.getElementById("result");
-
-      if (totalSeconds === 0) {
-        resultElement.innerHTML = `
-          <span style="color: var(--accent); font-weight: bold;">Perfect Sync!</span><br>
-          <span style="color: var(--text-sub); font-size: 15px;">表示時刻は標準時刻と完全に一致しています。</span>
-        `;
-        return;
-      }
-
-      const parts = [];
-      if (days > 0) parts.push(`${days}日`);
-      if (hours > 0) parts.push(`${hours}時間`);
-      if (minutes > 0) parts.push(`${minutes}分`);
-      if (seconds > 0) parts.push(`${seconds}秒`);
-
-      const direction = isFast ? "遅れています。" : "進んでいます。";
-
-      resultElement.innerHTML = `
-        <span style="color: var(--accent); font-weight: bold;">${parts.join("")}</span><br>
-        <span style="color: var(--text-sub);">${direction}</span>
-      `;
-
-      lastError = { days, hours, minutes, seconds, isFast };
-      document.getElementById("toReverseButton").style.display = "block";
-    }
-
-    // 🔁 誤差を補正モードに反映
-    function applyLastErrorToReverseInputs() {
-      if (!lastError) return;
-      document.getElementById("errorDays").value    = lastError.days    || 0;
-      document.getElementById("errorHours").value   = lastError.hours   || 0;
-      document.getElementById("errorMinutes").value = lastError.minutes || 0;
-      document.getElementById("errorSeconds").value = lastError.seconds || 0;
-      document.getElementById("errorDirection").value = lastError.isFast ? "early" : "late";
-      reverseCalculate();
-    }
-
-    // 🔁 誤差計算後に補正モードへ切り替える
-    function switchToCorrectionMode() {
-      document.getElementById("errorMode").style.display = "none";
-      document.getElementById("correctionMode").style.display = "block";
-      populateSeconds("reverseDisplaySeconds");
-      applyLastErrorToReverseInputs();
-    }
-
-    // 🔁 補正ロジック：誤差と表示時刻から標準時刻を逆算
-    function reverseCalculate() {
-      hasCalculated = true;
-      const resultElement = document.getElementById("reverseResult");
-
-      const days    = Number(document.getElementById("errorDays").value || 0);
-      const hours   = Number(document.getElementById("errorHours").value || 0);
-      const minutes = Number(document.getElementById("errorMinutes").value || 0);
-      const seconds = Number(document.getElementById("errorSeconds").value || 0);
-      const isLate  = document.getElementById("errorDirection").value === "late";
-
-      const displayInput = document.getElementById("reverseDisplayTime").value;
-      const displaySec   = Number(document.getElementById("reverseDisplaySeconds").value || 0);
-      if (!displayInput) {
-        resultElement.innerText = "表示時刻を入力してください";
-        return;
-      }
-
-      const displayTime = new Date(displayInput);
-      displayTime.setSeconds(displaySec);
-
-      const totalMs = ((days * 86400) + (hours * 3600) + (minutes * 60) + seconds) * 1000;
-      const correctedTime = new Date(displayTime.getTime() + (isLate ? -totalMs : totalMs));
-
-      const cy   = correctedTime.getFullYear();
-      const cm   = String(correctedTime.getMonth() + 1).padStart(2, '0');
-      const cd   = String(correctedTime.getDate()).padStart(2, '0');
-      const ch   = String(correctedTime.getHours()).padStart(2, '0');
-      const cmin = String(correctedTime.getMinutes()).padStart(2, '0');
-      const cs   = String(correctedTime.getSeconds()).padStart(2, '0');
-
-      resultElement.innerHTML = `
-        <p style="color: var(--accent); font-weight: bold;">${cy}年${cm}月${cd}日 ${ch}時${cmin}分${cs}秒</p>
-        <p style="color: var(--text-sub);">が補正時刻です</p>
-      `;
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js")
+        .then(() => console.log("Service Worker registered"))
+        .catch(error => console.error("Service Worker registration failed:", error));
     }
   </script>
 </body>
