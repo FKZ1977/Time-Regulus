@@ -40,7 +40,7 @@ input:focus, select:focus, button:focus {
 }
 
 h1.fkz {
-  font-size: 48px;
+  font-size: 40px;
   color: var(--accent);
   text-shadow: 0 0 12px var(--accent);
   margin-top: 60px;
