@@ -67,15 +67,21 @@
         <span class="unit-label">日</span>
       </div>
       <div class="unit-input">
-        <input type="number" id="errorHours" min="0" max="23" step="1" oninput="reverseCalculate()" tabindex="14">
+        <select id="errorHours" onchange="reverseCalculate()" tabindex="14">
+          <option value="">--</option>
+        </select>
         <span class="unit-label">時</span>
       </div>
       <div class="unit-input">
-        <input type="number" id="errorMinutes" min="0" max="59" step="1" oninput="reverseCalculate()" tabindex="15">
+        <select id="errorMinutes" onchange="reverseCalculate()" tabindex="15">
+          <option value="">--</option>
+        </select>
         <span class="unit-label">分</span>
       </div>
       <div class="unit-input">
-        <input type="number" id="errorSeconds" min="0" max="59" step="1" oninput="reverseCalculate()" tabindex="16">
+        <select id="errorSeconds" onchange="reverseCalculate()" tabindex="16">
+          <option value="">--</option>
+        </select>
         <span class="unit-label">秒</span>
       </div>
     </div>
@@ -98,7 +104,7 @@
       <label id="reverseTimeLabel" for="reverseDisplayTime">表示時刻:</label><br>
       <input type="datetime-local" id="reverseDisplayTime" step="60" tabindex="19">
       <select id="reverseDisplaySeconds" class="seconds-select" tabindex="20">
-        <option value="">秒</option>
+        <option value="">--</option>
       </select>
     </div>
 

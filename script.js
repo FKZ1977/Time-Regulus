@@ -1,10 +1,9 @@
-const currentVersion = "1.2.0"; // ← 更新時に変更する
+const currentVersion = "1.2.1";
 let lastError = null;
 let hasCalculated = false;
 let reverseMode = "toStandard";
-let hasCalculatedError = false; // ← 誤差計算済みフラグ
+let hasCalculatedError = false;
 
-// 🔐 パスワード認証処理
 function checkPass() {
   const inputField = document.getElementById("passcode");
   const input = inputField.value;
@@ -23,7 +22,6 @@ function checkPass() {
   }
 }
 
-// ⌨️ 起動時の初期処理
 document.addEventListener("DOMContentLoaded", function () {
   if (localStorage.getItem("lastVersion") !== currentVersion) {
     alert("Time Regulusが更新されました！");
@@ -43,8 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
   populateSeconds("standardSeconds");
   populateSeconds("displaySeconds");
   populateSeconds("reverseDisplaySeconds");
+  populateErrorDropdowns();
 
-  // 補正モード：秒変更で再計算
   document.getElementById("reverseDisplayTime").addEventListener("input", function () {
     if (hasCalculated) reverseCalculate();
   });
@@ -52,7 +50,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (hasCalculated) reverseCalculate();
   });
 
-  // 誤差モード：変更で即再計算
   document.getElementById("standardTime").addEventListener("input", () => {
     if (hasCalculatedError) calculateError();
   });
@@ -67,19 +64,42 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// ⏱️ 秒セレクト生成
 function populateSeconds(selectId) {
   const select = document.getElementById(selectId);
   if (!select || select.options.length > 1) return;
   for (let i = 0; i <= 59; i++) {
     const option = document.createElement("option");
     option.value = i;
-    option.text = `${String(i).padStart(2, '0')}秒`;
+    option.text = `${i}`; // 単位なし
     select.appendChild(option);
   }
 }
 
-// 🔁 モード切り替え
+function populateErrorDropdowns() {
+  const hourSelect = document.getElementById("errorHours");
+  const minuteSelect = document.getElementById("errorMinutes");
+  const secondSelect = document.getElementById("errorSeconds");
+
+  for (let i = 0; i <= 23; i++) {
+    const option = document.createElement("option");
+    option.value = i;
+    option.text = `${i}`; // 単位なし
+    hourSelect.appendChild(option);
+  }
+
+  for (let i = 0; i <= 59; i++) {
+    const minOpt = document.createElement("option");
+    minOpt.value = i;
+    minOpt.text = `${i}`; // 単位なし
+    minuteSelect.appendChild(minOpt);
+
+    const secOpt = document.createElement("option");
+    secOpt.value = i;
+    secOpt.text = `${i}`; // 単位なし
+    secondSelect.appendChild(secOpt);
+  }
+}
+
 function showErrorMode() {
   document.getElementById("modeSelect").style.display = "none";
   document.getElementById("errorMode").style.display = "block";
@@ -94,9 +114,8 @@ function backToModeSelect() {
   document.getElementById("modeSelect").style.display = "block";
 }
 
-// 🧮 誤差計算ロジック
 function calculateError() {
-  hasCalculatedError = true; // ← 一度計算されたらリアルタイム反映を許可
+  hasCalculatedError = true;
 
   const standardInput = document.getElementById("standardTime").value;
   const displayInput = document.getElementById("displayTime").value;
@@ -149,7 +168,6 @@ function calculateError() {
   document.getElementById("toReverseButton").style.display = "block";
 }
 
-// 🔁 誤差を補正モードに反映
 function applyLastErrorToReverseInputs() {
   if (!lastError) return;
   document.getElementById("errorDays").value    = lastError.days    || 0;
@@ -160,7 +178,6 @@ function applyLastErrorToReverseInputs() {
   reverseCalculate();
 }
 
-// 🔁 誤差計算後に補正モードへ切り替える
 function switchToCorrectionMode() {
   document.getElementById("errorMode").style.display = "none";
   document.getElementById("correctionMode").style.display = "block";
@@ -168,7 +185,6 @@ function switchToCorrectionMode() {
   applyLastErrorToReverseInputs();
 }
 
-// 🔁 補正ロジック：誤差と表示時刻から標準時刻を逆算
 function reverseCalculate() {
   hasCalculated = true;
   const resultElement = document.getElementById("reverseResult");
@@ -205,7 +221,6 @@ function reverseCalculate() {
   `;
 }
 
-// 🔁 表示時刻を逆算する新機能
 function calculateDisplayTime() {
   const resultElement = document.getElementById("reverseResult");
 
@@ -241,7 +256,6 @@ function calculateDisplayTime() {
   `;
 }
 
-// 🔁 ⇆変換ボタンの処理（交互色切り替え＋表示ボタン色固定）
 function toggleReverseMode() {
   reverseMode = reverseMode === "toStandard" ? "toDisplay" : "toStandard";
 
@@ -249,7 +263,6 @@ function toggleReverseMode() {
   const button = document.getElementById("reverseCalcButton");
   const toggleBtn = document.querySelector(".toggle-btn");
 
-  // ラベルとボタンテキスト切り替え
   if (reverseMode === "toDisplay") {
     label.innerText = "探している時刻:";
     button.innerText = "表示時刻を計算";
@@ -260,14 +273,10 @@ function toggleReverseMode() {
     button.classList.remove("active-toggle");
   }
 
-  // ⇆変換ボタンの色を交互に切り替え
   toggleBtn.classList.toggle("active-toggle");
-
-  // 結果を即時再計算
   handleReverseCalculation();
 }
 
-// 🔁 計算処理の分岐
 function handleReverseCalculation() {
   if (reverseMode === "toStandard") {
     reverseCalculate();
