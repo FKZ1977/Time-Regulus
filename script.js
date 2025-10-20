@@ -145,7 +145,7 @@ function calculateError() {
 
   if (totalSeconds === 0) {
     resultElement.innerHTML = `
-      <span style="color: var(--accent); font-weight: bold;">Perfect Sync!</span><br>
+      <span style="color: var(--accent); font-weight: bold;">Precision Sync!</span><br>
       <span style="color: var(--text-sub); font-size: 15px;">表示時刻は標準時刻と完全に一致しています。</span>
     `;
     return;
