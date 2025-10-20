@@ -4,12 +4,11 @@
   <meta charset="UTF-8">
   <title>Time Regulus</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="fade-in">
   <!-- 🔐 ロック画面 -->
   <div id="lockScreen">
     <h1 class="fkz">Time Regulus</h1>
@@ -32,35 +31,27 @@
   </div>
 
   <!-- 🧮 誤差計算モード -->
-  <div id="errorMode" class="mode-card" style="display:none;">
-    <button class="back-btn" onclick="backToModeSelect()" tabindex="5">← モード選択に戻る</button>
-    <p class="subtitle">誤差時刻の計算</p>
-
-    <div class="input-group">
-      <label for="standardTime">標準時刻:</label><br>
-      <input type="datetime-local" id="standardTime" step="60" tabindex="6">
-      <select id="standardSeconds" class="seconds-select" tabindex="7">
-        <option value="">秒</option>
-      </select>
-    </div>
-
-    <div class="input-group">
-      <label for="displayTime">表示時刻:</label><br>
-      <input type="datetime-local" id="displayTime" step="60" tabindex="8">
-      <select id="displaySeconds" class="seconds-select" tabindex="9">
-        <option value="">秒</option>
-      </select>
-    </div>
-
-    <button class="action-btn" onclick="calculateError()" tabindex="10">誤差時間を計算</button>
-
-    <div id="result" class="result-box"></div>
-
-    <div id="correctionPreview">
-      <div id="correctionResult"></div>
-      <div id="toReverseButton" style="display: none; margin-top: 20px;">
-        <button class="action-btn" onclick="switchToCorrectionMode()" tabindex="11">この誤差で逆算する</button>
+  <div id="errorMode" style="display:none;">
+    <div class="mode-card">
+      <button class="back-btn" onclick="backToModeSelect()">← 戻る</button>
+      <h2>誤差の計算</h2>
+      <div class="input-group">
+        <label>標準時刻：</label><br>
+        <input type="datetime-local" id="standardTime">
+        <select id="standardSeconds" class="seconds-select">
+          <option value="">秒</option>
+        </select>
       </div>
+      <div class="input-group">
+        <label>表示時刻：</label><br>
+        <input type="datetime-local" id="displayTime">
+        <select id="displaySeconds" class="seconds-select">
+          <option value="">秒</option>
+        </select>
+      </div>
+      <button class="action-btn" onclick="calculateError()">誤差を計算</button>
+      <div class="result-box" id="result"></div>
+      <button class="action-btn" id="toReverseButton" onclick="switchToCorrectionMode()" style="display:none;">⇆ 補正時刻を計算</button>
     </div>
   </div>
 
@@ -97,15 +88,21 @@
       </select>
     </div>
 
-    <div class="input-group">
-      <label for="reverseDisplayTime">表示時刻:</label><br>
-      <input type="datetime-local" id="reverseDisplayTime" step="60" tabindex="18">
-      <select id="reverseDisplaySeconds" class="seconds-select" tabindex="19">
+    <!-- ⇆変換ボタン -->
+    <div style="margin: 12px 0;">
+      <button class="action-btn toggle-btn" onclick="toggleReverseMode()" tabindex="18">⇆変換</button>
+    </div>
+
+    <!-- 入力枠切り替え -->
+    <div id="reverseTimeBlock" class="input-group">
+      <label id="reverseTimeLabel" for="reverseDisplayTime">表示時刻:</label><br>
+      <input type="datetime-local" id="reverseDisplayTime" step="60" tabindex="19">
+      <select id="reverseDisplaySeconds" class="seconds-select" tabindex="20">
         <option value="">秒</option>
       </select>
     </div>
 
-    <button class="action-btn" onclick="reverseCalculate()" tabindex="20">補正時刻を計算</button>
+    <button id="reverseCalcButton" class="action-btn" onclick="handleReverseCalculation()" tabindex="21">補正時刻を計算</button>
 
     <div id="reverseResult" class="result-box"></div>
   </div>

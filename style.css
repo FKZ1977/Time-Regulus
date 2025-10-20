@@ -7,6 +7,19 @@
   --btn-bg: #00ffe0;
   --btn-text: #000;
   --deep-green: #134d33;
+  --toggle-bg: #ff00aa;
+  --toggle-text: #fff;
+}
+
+/* 🌟 起動時フェードイン */
+.fade-in {
+  animation: fadeIn 1.2s ease-in-out forwards;
+  opacity: 0;
+}
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
 
 body {
@@ -95,10 +108,28 @@ input, select {
   cursor: pointer;
   margin-top: 20px;
   box-shadow: 0 4px 12px rgba(0,255,224,0.3);
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
 .action-btn:hover {
+  transform: scale(1.05);
+  background-color: #00e6cc;
+}
+
+.toggle-btn {
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  box-shadow: 0 4px 12px rgba(0,255,224,0.3);
+}
+
+.toggle-btn:hover {
+  background-color: #00e6cc;
+}
+
+.active-toggle {
+  background-color: var(--toggle-bg) !important;
+  color: var(--toggle-text) !important;
+  box-shadow: 0 0 10px rgba(255, 0, 170, 0.5);
   transform: scale(1.05);
 }
 

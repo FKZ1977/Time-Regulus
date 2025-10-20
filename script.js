@@ -1,5 +1,7 @@
+const currentVersion = "1.2.0"; // ← 更新時に変更する
 let lastError = null;
 let hasCalculated = false;
+let reverseMode = "toStandard";
 
 // 🔐 パスワード認証処理
 function checkPass() {
@@ -22,6 +24,12 @@ function checkPass() {
 
 // ⌨️ 起動時の初期処理
 document.addEventListener("DOMContentLoaded", function () {
+  // ✅ 更新通知
+  if (localStorage.getItem("lastVersion") !== currentVersion) {
+    alert("Time Regulusが更新されました！");
+    localStorage.setItem("lastVersion", currentVersion);
+  }
+
   const passInput = document.getElementById("passcode");
   if (passInput) {
     passInput.focus();
@@ -178,4 +186,75 @@ function reverseCalculate() {
     <p style="color: var(--accent); font-weight: bold;">${cy}年${cm}月${cd}日 ${ch}時${cmin}分${cs}秒</p>
     <p style="color: var(--text-sub);">が補正時刻です</p>
   `;
+}
+
+// 🔁 表示時刻を逆算する新機能
+function calculateDisplayTime() {
+  const resultElement = document.getElementById("reverseResult");
+
+  const days    = Number(document.getElementById("errorDays").value || 0);
+  const hours   = Number(document.getElementById("errorHours").value || 0);
+  const minutes = Number(document.getElementById("errorMinutes").value || 0);
+  const seconds = Number(document.getElementById("errorSeconds").value || 0);
+  const isLate  = document.getElementById("errorDirection").value === "late";
+
+  const targetInput = document.getElementById("reverseDisplayTime").value;
+  const targetSec   = Number(document.getElementById("reverseDisplaySeconds").value || 0);
+  if (!targetInput) {
+    resultElement.innerText = "探している時刻を入力してください";
+    return;
+  }
+
+  const targetTime = new Date(targetInput);
+  targetTime.setSeconds(targetSec);
+
+  const totalMs = ((days * 86400) + (hours * 3600) + (minutes * 60) + seconds) * 1000;
+  const displayTime = new Date(targetTime.getTime() + (isLate ? totalMs : -totalMs));
+
+  const dy   = displayTime.getFullYear();
+  const dm   = String(displayTime.getMonth() + 1).padStart(2, '0');
+  const dd   = String(displayTime.getDate()).padStart(2, '0');
+  const dh   = String(displayTime.getHours()).padStart(2, '0');
+  const dmin = String(displayTime.getMinutes()).padStart(2, '0');
+  const ds   = String(displayTime.getSeconds()).padStart(2, '0');
+
+  resultElement.innerHTML = `
+    <p style="color: var(--accent); font-weight: bold;">${dy}年${dm}月${dd}日 ${dh}時${dmin}分${ds}秒</p>
+    <p style="color: var(--text-sub);">が表示時刻です</p>
+  `;
+}
+
+// 🔁 ⇆変換ボタンの処理（交互色切り替え＋表示ボタン色固定）
+function toggleReverseMode() {
+  reverseMode = reverseMode === "toStandard" ? "toDisplay" : "toStandard";
+
+  const label = document.getElementById("reverseTimeLabel");
+  const button = document.getElementById("reverseCalcButton");
+  const toggleBtn = document.querySelector(".toggle-btn");
+
+  // ラベルとボタンテキスト切り替え
+  if (reverseMode === "toDisplay") {
+    label.innerText = "探している時刻:";
+    button.innerText = "表示時刻を計算";
+    button.classList.add("active-toggle");
+  } else {
+    label.innerText = "表示時刻:";
+    button.innerText = "補正時刻を計算";
+    button.classList.remove("active-toggle");
+  }
+
+  // ⇆変換ボタンの色を交互に切り替え
+  toggleBtn.classList.toggle("active-toggle");
+
+  // 結果を即時再計算
+  handleReverseCalculation();
+}
+
+// 🔁 計算処理の分岐
+function handleReverseCalculation() {
+  if (reverseMode === "toStandard") {
+    reverseCalculate();
+  } else {
+    calculateDisplayTime();
+  }
 }

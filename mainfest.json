@@ -1,10 +1,12 @@
 {
   "name": "Time Regulus",
-  "short_name": "Regulus",
+  "short_name": "TimeRegulus",
+  "version": "1.2.0",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0e0f11",
-  "theme_color": "#00ffe0",
+  "theme_color": "#0e0f11",
+  "description": "誤差と補正時刻を計算するPWAアプリ",
   "icons": [
     {
       "src": "icon-192.png",
