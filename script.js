@@ -2,6 +2,7 @@ const currentVersion = "1.2.0"; // ← 更新時に変更する
 let lastError = null;
 let hasCalculated = false;
 let reverseMode = "toStandard";
+let hasCalculatedError = false; // ← 誤差計算済みフラグ
 
 // 🔐 パスワード認証処理
 function checkPass() {
@@ -24,7 +25,6 @@ function checkPass() {
 
 // ⌨️ 起動時の初期処理
 document.addEventListener("DOMContentLoaded", function () {
-  // ✅ 更新通知
   if (localStorage.getItem("lastVersion") !== currentVersion) {
     alert("Time Regulusが更新されました！");
     localStorage.setItem("lastVersion", currentVersion);
@@ -44,11 +44,26 @@ document.addEventListener("DOMContentLoaded", function () {
   populateSeconds("displaySeconds");
   populateSeconds("reverseDisplaySeconds");
 
+  // 補正モード：秒変更で再計算
   document.getElementById("reverseDisplayTime").addEventListener("input", function () {
     if (hasCalculated) reverseCalculate();
   });
   document.getElementById("reverseDisplaySeconds").addEventListener("change", function () {
     if (hasCalculated) reverseCalculate();
+  });
+
+  // 誤差モード：変更で即再計算
+  document.getElementById("standardTime").addEventListener("input", () => {
+    if (hasCalculatedError) calculateError();
+  });
+  document.getElementById("displayTime").addEventListener("input", () => {
+    if (hasCalculatedError) calculateError();
+  });
+  document.getElementById("standardSeconds").addEventListener("change", () => {
+    if (hasCalculatedError) calculateError();
+  });
+  document.getElementById("displaySeconds").addEventListener("change", () => {
+    if (hasCalculatedError) calculateError();
   });
 });
 
@@ -81,6 +96,8 @@ function backToModeSelect() {
 
 // 🧮 誤差計算ロジック
 function calculateError() {
+  hasCalculatedError = true; // ← 一度計算されたらリアルタイム反映を許可
+
   const standardInput = document.getElementById("standardTime").value;
   const displayInput = document.getElementById("displayTime").value;
   const standardSec = Number(document.getElementById("standardSeconds").value || 0);
