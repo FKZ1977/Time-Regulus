@@ -275,7 +275,7 @@ function calculateDisplayTime() {
   const dmin = String(displayTime.getMinutes()).padStart(2, '0');
   const ds   = String(displayTime.getSeconds()).padStart(2, '0');
 
-  const color = reverseMode === "toDisplay" ? "var(--toggle-bg)" : "var(--accent)";
+const color = reverseMode === "toDisplay" ? "#fff" : "var(--accent)";
 
   resultElement.innerHTML = `
     <p style="color: ${color}; font-weight: bold;">
