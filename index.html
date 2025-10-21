@@ -40,6 +40,17 @@
     <div class="mode-card">
       <button class="back-btn" onclick="backToModeSelect()">← モード選択に戻る</button>
       <h2>誤差の計算</h2>
+
+      <!-- 表示時刻入力欄（先に表示） -->
+      <div class="input-group">
+        <label>表示時刻：</label><br>
+        <input type="datetime-local" id="displayTime">
+        <select id="displaySeconds" class="seconds-select">
+          <option value="">秒</option>
+        </select>
+      </div>
+
+      <!-- 標準時刻入力欄（後に表示） -->
       <div class="input-group">
         <label>標準時刻：</label>
         <button class="action-btn" onclick="setNowToStandard()" style="margin-left: 8px;">NOW🔄</button><br>
@@ -48,13 +59,7 @@
           <option value="">秒</option>
         </select>
       </div>
-      <div class="input-group">
-        <label>表示時刻：</label><br>
-        <input type="datetime-local" id="displayTime">
-        <select id="displaySeconds" class="seconds-select">
-          <option value="">秒</option>
-        </select>
-      </div>
+
       <button class="action-btn" onclick="calculateError()">誤差を計算</button>
       <div class="result-box" id="result"></div>
       <button class="action-btn" id="toReverseButton" onclick="switchToCorrectionMode()" style="display:none;">⇆ 補正時刻を計算</button>

@@ -19,8 +19,8 @@ function checkPass() {
   } else {
     errorMessage.innerText = "暗証番号が違います";
     inputField.style.border = "2px solid red";
-    inputField.value = ""; // ✅ 入力欄を空にする
-    generateKeypad();       // ✅ テンキーを再シャッフル
+    inputField.value = "";
+    generateKeypad();
   }
 }
 
@@ -204,6 +204,7 @@ function switchToCorrectionMode() {
   document.getElementById("correctionMode").style.display = "block";
   populateSeconds("reverseDisplaySeconds");
   applyLastErrorToReverseInputs();
+  reverseMode = "toStandard"; // ✅ 初期状態は補正時刻を計算
 }
 
 function reverseCalculate() {
@@ -236,7 +237,7 @@ function reverseCalculate() {
   const cmin = String(correctedTime.getMinutes()).padStart(2, '0');
   const cs   = String(correctedTime.getSeconds()).padStart(2, '0');
 
-  const color = reverseMode === "toDisplay" ? "var(--toggle-bg)" : "var(--accent)";
+  const color = reverseMode === "toDisplay" ? "#fff" : "var(--accent)";
 
   resultElement.innerHTML = `
     <p style="color: ${color}; font-weight: bold;">
@@ -275,7 +276,7 @@ function calculateDisplayTime() {
   const dmin = String(displayTime.getMinutes()).padStart(2, '0');
   const ds   = String(displayTime.getSeconds()).padStart(2, '0');
 
-const color = reverseMode === "toDisplay" ? "#fff" : "var(--accent)";
+  const color = reverseMode === "toDisplay" ? "#fff" : "var(--accent)";
 
   resultElement.innerHTML = `
     <p style="color: ${color}; font-weight: bold;">
@@ -315,7 +316,7 @@ function handleReverseCalculation() {
   }
 }
 
-// ✅ NOW🔄ボタンの動作（標準時刻に現在時刻をセット）
+// ✅ NOW🔄ボタンの動作（標準時刻に現在時刻をセットし、即計算）
 function setNowToStandard() {
   const now = new Date();
 
@@ -331,5 +332,5 @@ function setNowToStandard() {
   document.getElementById("standardTime").value = datetimeLocal;
   document.getElementById("standardSeconds").value = sec;
 
-  if (hasCalculatedError) calculateError();
+  calculateError(); // ✅ 条件なしで即実行
 }
