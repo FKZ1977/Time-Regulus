@@ -11,12 +11,17 @@
 <body class="fade-in">
   <!-- 🔐 ロック画面 -->
   <div id="lockScreen">
-    <h1 class="fkz">Time Regulus</h1>
-    <p class="subtitle">タイム　レグルス　v1.2.1</p>
+    <h1 class="fkz rise-in">Time Regulus</h1>
+    <p class="subtitle">タイム　レグルス　v1.3.0</p>
     <label for="passcode">暗証番号を入力：</label><br>
     <input type="password" id="passcode" placeholder="例：1234" tabindex="1">
     <button class="action-btn" onclick="checkPass()" tabindex="2">開く</button>
-    <p id="error" style="color:red;"></p><br>
+
+    <!-- 🎲 ランダムテンキー -->
+    <div id="keypad" class="keypad-grid"></div>
+
+    <!-- ✅ エラー表示（高さ固定） -->
+    <p id="error"></p>
     <p class="subtitle">- produced by H.Fukazu -</p>
   </div>
 
@@ -36,7 +41,8 @@
       <button class="back-btn" onclick="backToModeSelect()">← モード選択に戻る</button>
       <h2>誤差の計算</h2>
       <div class="input-group">
-        <label>標準時刻：</label><br>
+        <label>標準時刻：</label>
+        <button class="action-btn" onclick="setNowToStandard()" style="margin-left: 8px;">NOW🔄</button><br>
         <input type="datetime-local" id="standardTime">
         <select id="standardSeconds" class="seconds-select">
           <option value="">秒</option>

@@ -1,4 +1,4 @@
-const currentVersion = "1.2.1";
+const currentVersion = "1.3.0";
 let lastError = null;
 let hasCalculated = false;
 let reverseMode = "toStandard";
@@ -19,7 +19,26 @@ function checkPass() {
   } else {
     errorMessage.innerText = "暗証番号が違います";
     inputField.style.border = "2px solid red";
+    inputField.value = ""; // ✅ 入力欄を空にする
+    generateKeypad();       // ✅ テンキーを再シャッフル
   }
+}
+
+function generateKeypad() {
+  const keypad = document.getElementById("keypad");
+  const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const shuffled = numbers.sort(() => Math.random() - 0.5);
+  keypad.innerHTML = "";
+
+  shuffled.forEach(num => {
+    const btn = document.createElement("button");
+    btn.innerText = num;
+    btn.onclick = () => {
+      const input = document.getElementById("passcode");
+      input.value += num;
+    };
+    keypad.appendChild(btn);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -37,6 +56,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  generateKeypad();
 
   populateSeconds("standardSeconds");
   populateSeconds("displaySeconds");
@@ -70,7 +91,7 @@ function populateSeconds(selectId) {
   for (let i = 0; i <= 59; i++) {
     const option = document.createElement("option");
     option.value = i;
-    option.text = `${i}`; // 単位なし
+    option.text = `${i}`;
     select.appendChild(option);
   }
 }
@@ -83,19 +104,19 @@ function populateErrorDropdowns() {
   for (let i = 0; i <= 23; i++) {
     const option = document.createElement("option");
     option.value = i;
-    option.text = `${i}`; // 単位なし
+    option.text = `${i}`;
     hourSelect.appendChild(option);
   }
 
   for (let i = 0; i <= 59; i++) {
     const minOpt = document.createElement("option");
     minOpt.value = i;
-    minOpt.text = `${i}`; // 単位なし
+    minOpt.text = `${i}`;
     minuteSelect.appendChild(minOpt);
 
     const secOpt = document.createElement("option");
     secOpt.value = i;
-    secOpt.text = `${i}`; // 単位なし
+    secOpt.text = `${i}`;
     secondSelect.appendChild(secOpt);
   }
 }
@@ -145,7 +166,7 @@ function calculateError() {
 
   if (totalSeconds === 0) {
     resultElement.innerHTML = `
-      <span style="color: var(--accent); font-weight: bold;">Precision Sync!</span><br>
+      <span style="color: var(--accent); font-weight: bold;">Perfect Sync!</span><br>
       <span style="color: var(--text-sub); font-size: 15px;">表示時刻は標準時刻と完全に一致しています。</span>
     `;
     return;
@@ -215,8 +236,12 @@ function reverseCalculate() {
   const cmin = String(correctedTime.getMinutes()).padStart(2, '0');
   const cs   = String(correctedTime.getSeconds()).padStart(2, '0');
 
+  const color = reverseMode === "toDisplay" ? "var(--toggle-bg)" : "var(--accent)";
+
   resultElement.innerHTML = `
-    <p style="color: var(--accent); font-weight: bold;">${cy}年${cm}月${cd}日 ${ch}時${cmin}分${cs}秒</p>
+    <p style="color: ${color}; font-weight: bold;">
+      ${cy}年${cm}月${cd}日 ${ch}時${cmin}分${cs}秒
+    </p>
     <p style="color: var(--text-sub);">が補正時刻です</p>
   `;
 }
@@ -250,8 +275,12 @@ function calculateDisplayTime() {
   const dmin = String(displayTime.getMinutes()).padStart(2, '0');
   const ds   = String(displayTime.getSeconds()).padStart(2, '0');
 
+  const color = reverseMode === "toDisplay" ? "var(--toggle-bg)" : "var(--accent)";
+
   resultElement.innerHTML = `
-    <p style="color: var(--accent); font-weight: bold;">${dy}年${dm}月${dd}日 ${dh}時${dmin}分${ds}秒</p>
+    <p style="color: ${color}; font-weight: bold;">
+      ${dy}年${dm}月${dd}日 ${dh}時${dmin}分${ds}秒
+    </p>
     <p style="color: var(--text-sub);">が表示時刻です</p>
   `;
 }
@@ -267,13 +296,14 @@ function toggleReverseMode() {
     label.innerText = "探している時刻:";
     button.innerText = "表示時刻を計算";
     button.classList.add("active-toggle");
+    toggleBtn.classList.add("active-toggle");
   } else {
     label.innerText = "表示時刻:";
     button.innerText = "補正時刻を計算";
     button.classList.remove("active-toggle");
+    toggleBtn.classList.remove("active-toggle");
   }
 
-  toggleBtn.classList.toggle("active-toggle");
   handleReverseCalculation();
 }
 
@@ -283,4 +313,23 @@ function handleReverseCalculation() {
   } else {
     calculateDisplayTime();
   }
+}
+
+// ✅ NOW🔄ボタンの動作（標準時刻に現在時刻をセット）
+function setNowToStandard() {
+  const now = new Date();
+
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  const hh = String(now.getHours()).padStart(2, '0');
+  const min = String(now.getMinutes()).padStart(2, '0');
+  const sec = now.getSeconds();
+
+  const datetimeLocal = `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+
+  document.getElementById("standardTime").value = datetimeLocal;
+  document.getElementById("standardSeconds").value = sec;
+
+  if (hasCalculatedError) calculateError();
 }

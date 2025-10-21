@@ -22,6 +22,19 @@
   }
 }
 
+/* 🌈 タイトル文字の上昇フェードイン */
+.rise-in {
+  animation: riseFade 1.2s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+@keyframes riseFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -98,6 +111,7 @@ input, select {
   color: var(--text-main);
 }
 
+/* ✅ ボタンスタイル統一 */
 .action-btn {
   background-color: var(--btn-bg);
   color: var(--btn-text);
@@ -110,7 +124,6 @@ input, select {
   box-shadow: 0 4px 12px rgba(0,255,224,0.3);
   transition: transform 0.2s ease, background-color 0.3s ease;
 }
-
 .action-btn:hover {
   transform: scale(1.05);
   background-color: #00e6cc;
@@ -121,7 +134,6 @@ input, select {
   color: var(--btn-text);
   box-shadow: 0 4px 12px rgba(0,255,224,0.3);
 }
-
 .toggle-btn:hover {
   background-color: #00e6cc;
 }
@@ -142,7 +154,6 @@ input, select {
   cursor: pointer;
   transition: transform 0.2s ease;
 }
-
 .back-btn:hover {
   transform: scale(1.05);
 }
@@ -155,9 +166,17 @@ input, select {
   text-align: center;
   margin: 20px 0;
 }
-
 .result-box p {
   margin: 20px 0;
+}
+
+/* ✅ エラーメッセージの高さ固定と余白調整 */
+#error {
+  color: red;
+  min-height: 1.2em;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-size: 14px;
 }
 
 .flex-wrap {
@@ -181,7 +200,7 @@ input, select {
 /* 🎯 誤差入力欄（日・時・分・秒）の枠サイズ調整用 */
 .unit-input input,
 .unit-input select {
-  width: 50px; /* ← 必要に応じて変更可能 */
+  width: 50px;
   min-width: 40px;
   max-width: 80px;
   padding: 4px 6px;
@@ -221,4 +240,28 @@ input, select {
 
 #errorMode, #correctionMode {
   padding-top: 60px;
+}
+
+/* 🎲 テンキーのスタイル（サイズ調整済み） */
+.keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 45px);
+  grid-template-rows: repeat(3, 45px);
+  gap: 10px;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+.keypad-grid button {
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--accent);
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(0,255,224,0.2);
+  transition: background-color 0.2s ease;
+}
+.keypad-grid button:hover {
+  background-color: rgba(0,255,224,0.2);
 }
