@@ -3,6 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>Time Regulus</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R7PW7DY4GF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-R7PW7DY4GF');
+  </script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-192.png">
@@ -12,7 +23,7 @@
   <!-- 🔐 ロック画面 -->
   <div id="lockScreen">
     <h1 class="fkz rise-in">Time Regulus</h1>
-    <p class="subtitle">タイム　レグルス　v1.3.0</p>
+    <p class="subtitle">タイム　レグルス　v1.4.0</p>
     <label for="passcode">暗証番号を入力：</label><br>
     <input type="password" id="passcode" placeholder="例：1234" tabindex="1">
     <button class="action-btn" onclick="checkPass()" tabindex="2">開く</button>
@@ -66,7 +77,7 @@
     </div>
   </div>
 
-  <!-- 🔧 補正モード -->
+  <!-- ここからindex－Ｂ　--🔧 補正モード -->
   <div id="correctionMode" class="mode-card deep-green" style="display:none;">
     <button class="back-btn" onclick="backToModeSelect()" tabindex="12">← モード選択に戻る</button>
     <p class="subtitle">補正時刻の計算</p>

@@ -1,4 +1,4 @@
-const currentVersion = "1.3.0";
+const currentVersion = "1.4.0";
 let lastError = null;
 let hasCalculated = false;
 let reverseMode = "toStandard";
@@ -20,6 +20,7 @@ function checkPass() {
     errorMessage.innerText = "暗証番号が違います";
     inputField.style.border = "2px solid red";
     inputField.value = "";
+    inputField.focus();
     generateKeypad();
   }
 }
@@ -87,11 +88,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function populateSeconds(selectId) {
   const select = document.getElementById(selectId);
-  if (!select || select.options.length > 1) return;
+  if (!select) return;
+
+  select.innerHTML = ""; // ✅ 既存の "--" を完全に消去
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.text = "秒"; // ✅ 初期表示を「秒」に固定
+  select.appendChild(defaultOption);
+
   for (let i = 0; i <= 59; i++) {
     const option = document.createElement("option");
     option.value = i;
-    option.text = `${i}`;
+    option.text = i.toString().padStart(2, '0');
     select.appendChild(option);
   }
 }
@@ -121,14 +130,35 @@ function populateErrorDropdowns() {
   }
 }
 
+// ✅ 修正：NOW🔄ボタンで常に誤差計算を実行
+function setNowToStandard() {
+  const now = new Date();
+
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  const hh = String(now.getHours()).padStart(2, '0');
+  const min = String(now.getMinutes()).padStart(2, '0');
+  const sec = now.getSeconds();
+
+  const datetimeLocal = `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+
+  document.getElementById("standardTime").value = datetimeLocal;
+  document.getElementById("standardSeconds").value = sec;
+
+  calculateError(); // ✅ 条件なしで常に実行
+}
+
 function showErrorMode() {
   document.getElementById("modeSelect").style.display = "none";
   document.getElementById("errorMode").style.display = "block";
 }
+
 function showCorrectionMode() {
   document.getElementById("modeSelect").style.display = "none";
   document.getElementById("correctionMode").style.display = "block";
 }
+
 function backToModeSelect() {
   document.getElementById("errorMode").style.display = "none";
   document.getElementById("correctionMode").style.display = "none";
@@ -202,9 +232,9 @@ function applyLastErrorToReverseInputs() {
 function switchToCorrectionMode() {
   document.getElementById("errorMode").style.display = "none";
   document.getElementById("correctionMode").style.display = "block";
-  populateSeconds("reverseDisplaySeconds");
+  populateSeconds("reverseDisplaySeconds"); // ✅ 秒リストを再生成（初期表示「秒」＋00〜59）
   applyLastErrorToReverseInputs();
-  reverseMode = "toStandard"; // ✅ 初期状態は補正時刻を計算
+  reverseMode = "toStandard";
 }
 
 function reverseCalculate() {
@@ -238,12 +268,13 @@ function reverseCalculate() {
   const cs   = String(correctedTime.getSeconds()).padStart(2, '0');
 
   const color = reverseMode === "toDisplay" ? "#fff" : "var(--accent)";
+  const label = reverseMode === "toDisplay" ? "表示時刻です" : "補正時刻です";
 
   resultElement.innerHTML = `
     <p style="color: ${color}; font-weight: bold;">
       ${cy}年${cm}月${cd}日 ${ch}時${cmin}分${cs}秒
     </p>
-    <p style="color: var(--text-sub);">が補正時刻です</p>
+    <p style="color: var(--text-sub);">が${label}</p>
   `;
 }
 
@@ -277,12 +308,13 @@ function calculateDisplayTime() {
   const ds   = String(displayTime.getSeconds()).padStart(2, '0');
 
   const color = reverseMode === "toDisplay" ? "#fff" : "var(--accent)";
+  const label = reverseMode === "toDisplay" ? "表示時刻です" : "補正時刻です";
 
   resultElement.innerHTML = `
     <p style="color: ${color}; font-weight: bold;">
       ${dy}年${dm}月${dd}日 ${dh}時${dmin}分${ds}秒
     </p>
-    <p style="color: var(--text-sub);">が表示時刻です</p>
+    <p style="color: var(--text-sub);">が${label}</p>
   `;
 }
 
@@ -314,23 +346,4 @@ function handleReverseCalculation() {
   } else {
     calculateDisplayTime();
   }
-}
-
-// ✅ NOW🔄ボタンの動作（標準時刻に現在時刻をセットし、即計算）
-function setNowToStandard() {
-  const now = new Date();
-
-  const yyyy = now.getFullYear();
-  const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const dd = String(now.getDate()).padStart(2, '0');
-  const hh = String(now.getHours()).padStart(2, '0');
-  const min = String(now.getMinutes()).padStart(2, '0');
-  const sec = now.getSeconds();
-
-  const datetimeLocal = `${yyyy}-${mm}-${dd}T${hh}:${min}`;
-
-  document.getElementById("standardTime").value = datetimeLocal;
-  document.getElementById("standardSeconds").value = sec;
-
-  calculateError(); // ✅ 条件なしで即実行
 }
