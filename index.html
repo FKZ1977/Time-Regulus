@@ -54,7 +54,7 @@
   <!-- 🔐 ロック画面 -->
   <div id="lockScreen">
     <h1 class="fkz rise-in-long">Time Regulus</h1>
-    <p class="subtitle">タイム　レグルス　v1.4.0</p>
+    <p class="subtitle">タイム　レグルス　v1.4.1</p>
     <label for="passcode">暗証番号を入力：</label><br>
     <input type="password" id="passcode" placeholder="例：1234" tabindex="1">
     <button class="action-btn" onclick="checkPass()" tabindex="2">開く</button>
@@ -106,7 +106,7 @@
     </div>
   </div>
 
-  <!-- 🔧 補正モード -->
+  <!-- 🔧 補正モード（逆算） -->
   <div id="correctionMode" class="mode-card deep-green" style="display:none;">
     <button class="back-btn" onclick="backToModeSelect()" tabindex="12">← モード選択に戻る</button>
     <p class="subtitle">補正時刻の計算</p>
@@ -114,23 +114,23 @@
     <label>補正に使う誤差：</label>
     <div class="flex-wrap">
       <div class="unit-input">
-        <input type="number" id="errorDays" min="0" step="1" oninput="reverseCalculate()" tabindex="13">
+        <input type="number" id="errorDays" min="0" step="1" tabindex="13">
         <span class="unit-label">日</span>
       </div>
       <div class="unit-input">
-        <select id="errorHours" onchange="reverseCalculate()" tabindex="14">
+        <select id="errorHours" tabindex="14">
           <option value="">--</option>
         </select>
         <span class="unit-label">時</span>
       </div>
       <div class="unit-input">
-        <select id="errorMinutes" onchange="reverseCalculate()" tabindex="15">
+        <select id="errorMinutes" tabindex="15">
           <option value="">--</option>
         </select>
         <span class="unit-label">分</span>
       </div>
       <div class="unit-input">
-        <select id="errorSeconds" onchange="reverseCalculate()" tabindex="16">
+        <select id="errorSeconds" tabindex="16">
           <option value="">--</option>
         </select>
         <span class="unit-label">秒</span>
@@ -139,7 +139,7 @@
 
     <div class="input-group">
       <label for="errorDirection" style="display:inline-block;">表示時刻は標準時刻より：</label>
-      <select id="errorDirection" onchange="reverseCalculate()" tabindex="17">
+      <select id="errorDirection" tabindex="17">
         <option value="late">進んでいる</option>
         <option value="early">遅れている</option>
       </select>
@@ -157,7 +157,7 @@
       </select>
     </div>
 
-    <button id="reverseCalcButton" class="action-btn" onclick="handleReverseCalculation()" tabindex="21">補正時刻を計算</button>
+    <!-- ✅ 自動計算結果表示エリア -->
     <div id="reverseResult" class="result-box"></div>
   </div>
 

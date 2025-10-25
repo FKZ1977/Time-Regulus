@@ -1,4 +1,4 @@
-const currentVersion = "1.4.0";
+const currentVersion = "1.4.1";
 let lastError = null;
 let hasCalculated = false;
 let reverseMode = "toStandard";
@@ -65,11 +65,17 @@ document.addEventListener("DOMContentLoaded", function () {
   populateSeconds("reverseDisplaySeconds");
   populateErrorDropdowns();
 
-  document.getElementById("reverseDisplayTime").addEventListener("input", function () {
-    if (hasCalculated) reverseCalculate();
-  });
-  document.getElementById("reverseDisplaySeconds").addEventListener("change", function () {
-    if (hasCalculated) reverseCalculate();
+  // 自動計算トリガー（逆算モード）
+  const reverseInputs = [
+    "errorDays", "errorHours", "errorMinutes", "errorSeconds",
+    "errorDirection", "reverseDisplayTime", "reverseDisplaySeconds"
+  ];
+  reverseInputs.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("input", handleReverseCalculation);
+      el.addEventListener("change", handleReverseCalculation);
+    }
   });
 
   document.getElementById("standardTime").addEventListener("input", () => {
@@ -90,11 +96,11 @@ function populateSeconds(selectId) {
   const select = document.getElementById(selectId);
   if (!select) return;
 
-  select.innerHTML = ""; // ✅ 既存の "--" を完全に消去
+  select.innerHTML = "";
 
   const defaultOption = document.createElement("option");
   defaultOption.value = "";
-  defaultOption.text = "秒"; // ✅ 初期表示を「秒」に固定
+  defaultOption.text = "秒";
   select.appendChild(defaultOption);
 
   for (let i = 0; i <= 59; i++) {
@@ -130,7 +136,6 @@ function populateErrorDropdowns() {
   }
 }
 
-// ✅ 修正：NOW🔄ボタンで常に誤差計算を実行
 function setNowToStandard() {
   const now = new Date();
 
@@ -146,7 +151,7 @@ function setNowToStandard() {
   document.getElementById("standardTime").value = datetimeLocal;
   document.getElementById("standardSeconds").value = sec;
 
-  calculateError(); // ✅ 条件なしで常に実行
+  calculateError();
 }
 
 function showErrorMode() {
@@ -232,108 +237,30 @@ function applyLastErrorToReverseInputs() {
 function switchToCorrectionMode() {
   document.getElementById("errorMode").style.display = "none";
   document.getElementById("correctionMode").style.display = "block";
-  populateSeconds("reverseDisplaySeconds"); // ✅ 秒リストを再生成（初期表示「秒」＋00〜59）
+
+  // ✅ 秒セレクトの選択値を保持・復元
+  const prevSeconds = document.getElementById("reverseDisplaySeconds").value;
+  populateSeconds("reverseDisplaySeconds");
+  if (prevSeconds !== "" && prevSeconds !== "秒" && prevSeconds !== "--") {
+    document.getElementById("reverseDisplaySeconds").value = prevSeconds;
+  }
+
   applyLastErrorToReverseInputs();
   reverseMode = "toStandard";
-}
-
-function reverseCalculate() {
-  hasCalculated = true;
-  const resultElement = document.getElementById("reverseResult");
-
-  const days    = Number(document.getElementById("errorDays").value || 0);
-  const hours   = Number(document.getElementById("errorHours").value || 0);
-  const minutes = Number(document.getElementById("errorMinutes").value || 0);
-  const seconds = Number(document.getElementById("errorSeconds").value || 0);
-  const isLate  = document.getElementById("errorDirection").value === "late";
-
-  const displayInput = document.getElementById("reverseDisplayTime").value;
-  const displaySec   = Number(document.getElementById("reverseDisplaySeconds").value || 0);
-  if (!displayInput) {
-    resultElement.innerText = "表示時刻を入力してください";
-    return;
-  }
-
-  const displayTime = new Date(displayInput);
-  displayTime.setSeconds(displaySec);
-
-  const totalMs = ((days * 86400) + (hours * 3600) + (minutes * 60) + seconds) * 1000;
-  const correctedTime = new Date(displayTime.getTime() + (isLate ? -totalMs : totalMs));
-
-  const cy   = correctedTime.getFullYear();
-  const cm   = String(correctedTime.getMonth() + 1).padStart(2, '0');
-  const cd   = String(correctedTime.getDate()).padStart(2, '0');
-  const ch   = String(correctedTime.getHours()).padStart(2, '0');
-  const cmin = String(correctedTime.getMinutes()).padStart(2, '0');
-  const cs   = String(correctedTime.getSeconds()).padStart(2, '0');
-
-  const color = reverseMode === "toDisplay" ? "#fff" : "var(--accent)";
-  const label = reverseMode === "toDisplay" ? "表示時刻です" : "補正時刻です";
-
-  resultElement.innerHTML = `
-    <p style="color: ${color}; font-weight: bold;">
-      ${cy}年${cm}月${cd}日 ${ch}時${cmin}分${cs}秒
-    </p>
-    <p style="color: var(--text-sub);">が${label}</p>
-  `;
-}
-
-function calculateDisplayTime() {
-  const resultElement = document.getElementById("reverseResult");
-
-  const days    = Number(document.getElementById("errorDays").value || 0);
-  const hours   = Number(document.getElementById("errorHours").value || 0);
-  const minutes = Number(document.getElementById("errorMinutes").value || 0);
-  const seconds = Number(document.getElementById("errorSeconds").value || 0);
-  const isLate  = document.getElementById("errorDirection").value === "late";
-
-  const targetInput = document.getElementById("reverseDisplayTime").value;
-  const targetSec   = Number(document.getElementById("reverseDisplaySeconds").value || 0);
-  if (!targetInput) {
-    resultElement.innerText = "探している時刻を入力してください";
-    return;
-  }
-
-  const targetTime = new Date(targetInput);
-  targetTime.setSeconds(targetSec);
-
-  const totalMs = ((days * 86400) + (hours * 3600) + (minutes * 60) + seconds) * 1000;
-  const displayTime = new Date(targetTime.getTime() + (isLate ? totalMs : -totalMs));
-
-  const dy   = displayTime.getFullYear();
-  const dm   = String(displayTime.getMonth() + 1).padStart(2, '0');
-  const dd   = String(displayTime.getDate()).padStart(2, '0');
-  const dh   = String(displayTime.getHours()).padStart(2, '0');
-  const dmin = String(displayTime.getMinutes()).padStart(2, '0');
-  const ds   = String(displayTime.getSeconds()).padStart(2, '0');
-
-  const color = reverseMode === "toDisplay" ? "#fff" : "var(--accent)";
-  const label = reverseMode === "toDisplay" ? "表示時刻です" : "補正時刻です";
-
-  resultElement.innerHTML = `
-    <p style="color: ${color}; font-weight: bold;">
-      ${dy}年${dm}月${dd}日 ${dh}時${dmin}分${ds}秒
-    </p>
-    <p style="color: var(--text-sub);">が${label}</p>
-  `;
+  handleReverseCalculation();
 }
 
 function toggleReverseMode() {
   reverseMode = reverseMode === "toStandard" ? "toDisplay" : "toStandard";
 
   const label = document.getElementById("reverseTimeLabel");
-  const button = document.getElementById("reverseCalcButton");
   const toggleBtn = document.querySelector(".toggle-btn");
 
   if (reverseMode === "toDisplay") {
     label.innerText = "探している時刻:";
-    button.innerText = "表示時刻を計算";
-    button.classList.add("active-toggle");
     toggleBtn.classList.add("active-toggle");
   } else {
     label.innerText = "表示時刻:";
-    button.innerText = "補正時刻を計算";
-    button.classList.remove("active-toggle");
     toggleBtn.classList.remove("active-toggle");
   }
 
@@ -341,9 +268,64 @@ function toggleReverseMode() {
 }
 
 function handleReverseCalculation() {
-  if (reverseMode === "toStandard") {
-    reverseCalculate();
-  } else {
-    calculateDisplayTime();
+  const resultElement = document.getElementById("reverseResult");
+  resultElement.innerHTML = "";
+
+  const days    = Number(document.getElementById("errorDays").value || 0);
+  const hours   = Number(document.getElementById("errorHours").value || 0);
+  const minutes = Number(document.getElementById("errorMinutes").value || 0);
+  const seconds = Number(document.getElementById("errorSeconds").value || 0);
+  const direction = document.getElementById("errorDirection").value;
+
+  const timeInput = document.getElementById("reverseDisplayTime").value;
+  const timeSec   = document.getElementById("reverseDisplaySeconds").value;
+
+  const hasError = (days + hours + minutes + seconds) > 0;
+  const hasTime = timeInput && timeSec !== "" && timeSec !== "秒" && timeSec !== "--";
+
+  if (!hasError && !hasTime) {
+    resultElement.innerText = "両方の時刻を入力してください";
+    return;
   }
+
+  if (!hasTime && hasError) {
+    resultElement.innerText = reverseMode === "toDisplay"
+      ? "探している時刻を入力してください"
+      : "表示時刻を入力してください";
+    return;
+  }
+
+  if (hasTime && !hasError) {
+    resultElement.innerText = "補正に使う誤差を入力してください";
+    return;
+  }
+
+  const baseTime = new Date(timeInput);
+  baseTime.setSeconds(Number(timeSec));
+
+  const totalMs = ((days * 86400) + (hours * 3600) + (minutes * 60) + seconds) * 1000;
+  const isLate = direction === "late";
+
+  const resultTime = new Date(
+    reverseMode === "toDisplay"
+      ? baseTime.getTime() + (isLate ? totalMs : -totalMs)
+      : baseTime.getTime() + (isLate ? -totalMs : totalMs)
+  );
+
+  const y = resultTime.getFullYear();
+  const m = String(resultTime.getMonth() + 1).padStart(2, '0');
+  const d = String(resultTime.getDate()).padStart(2, '0');
+  const h = String(resultTime.getHours()).padStart(2, '0');
+  const min = String(resultTime.getMinutes()).padStart(2, '0');
+  const s = String(resultTime.getSeconds()).padStart(2, '0');
+
+  const color = reverseMode === "toDisplay" ? "#fff" : "var(--accent)";
+  const label = reverseMode === "toDisplay" ? "表示時刻です" : "補正時刻です";
+
+  resultElement.innerHTML = `
+    <p style="color: ${color}; font-weight: bold;">
+      ${y}年${m}月${d}日 ${h}時${min}分${s}秒
+    </p>
+    <p style="color: var(--text-sub);">が${label}</p>
+  `;
 }

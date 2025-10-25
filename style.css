@@ -111,7 +111,7 @@ input, select {
   color: var(--text-main);
 }
 
-/* ✅ ボタンスタイル統一 */
+/* ✅ ボタンスタイル統一（復元＋ピンク対応） */
 .action-btn {
   background-color: var(--btn-bg);
   color: var(--btn-text);
@@ -133,15 +133,26 @@ input, select {
   background-color: var(--btn-bg);
   color: var(--btn-text);
   box-shadow: 0 4px 12px rgba(0,255,224,0.3);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s ease;
 }
 .toggle-btn:hover {
   background-color: #00e6cc;
+  transform: scale(1.05);
 }
 
-.active-toggle {
-  background-color: var(--toggle-bg) !important;
-  color: var(--toggle-text) !important;
+.toggle-btn.active-toggle {
+  background-color: var(--toggle-bg);
+  color: var(--toggle-text);
   box-shadow: 0 0 10px rgba(255, 0, 170, 0.5);
+  transform: scale(1);
+  transition: transform 0.2s ease;
+}
+.toggle-btn.active-toggle:hover {
+  background-color: var(--toggle-bg);
   transform: scale(1.05);
 }
 
