@@ -20,41 +20,22 @@
 
   <style>
     @keyframes riseInLong {
-      0% {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      0% { opacity: 0; transform: translateY(40px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
-
     @keyframes riseInShort {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
-
-    .rise-in-long {
-      animation: riseInLong 1s ease-out forwards;
-    }
-
-    .rise-in-short {
-      animation: riseInShort 1s ease-out forwards;
-    }
+    .rise-in-long { animation: riseInLong 1s ease-out forwards; }
+    .rise-in-short { animation: riseInShort 1s ease-out forwards; }
   </style>
 </head>
 <body class="fade-in">
   <!-- 🔐 ロック画面 -->
   <div id="lockScreen">
     <h1 class="fkz rise-in-long">Time Regulus</h1>
-    <p class="subtitle">タイム　レグルス　v1.4.1</p>
+    <p class="subtitle">タイム　レグルス　v1.5.0</p>
     <label for="passcode">暗証番号を入力：</label><br>
     <input type="password" id="passcode" placeholder="例：1234" tabindex="1">
     <button class="action-btn" onclick="checkPass()" tabindex="2">開く</button>
@@ -65,6 +46,9 @@
     <!-- ✅ エラー表示（高さ固定） -->
     <p id="error"></p>
     <p class="subtitle">- produced by H.Fukazu -</p>
+
+    <p class="info-link" onclick="showInformationPage()"> - informationcenter - </p>
+
   </div>
 
   <!-- 🔁 モード選択画面 -->
@@ -109,7 +93,8 @@
   <!-- 🔧 補正モード（逆算） -->
   <div id="correctionMode" class="mode-card deep-green" style="display:none;">
     <button class="back-btn" onclick="backToModeSelect()" tabindex="12">← モード選択に戻る</button>
-    <p class="subtitle">補正時刻の計算</p>
+    <h1 class="fkz">補正時刻の計算</h1>
+    <p class="subtitle">補正時刻の計算モード</p>
 
     <label>補正に使う誤差：</label>
     <div class="flex-wrap">
@@ -157,8 +142,38 @@
       </select>
     </div>
 
-    <!-- ✅ 自動計算結果表示エリア -->
     <div id="reverseResult" class="result-box"></div>
+    <button class="action-btn" id="addToListButton" onclick="addResultToList()" style="display:none;">一覧に追加</button>
+    <p id="showListLink" class="show-list-link" onclick="showResultList()" style="display:none;">結果一覧を表示 →</p>
+  </div>
+
+  <!-- 📋 結果一覧ページ -->
+  <div id="resultListPage" style="display:none; text-align:center; padding: 40px 16px;">
+    <button class="back-btn" onclick="backToCorrectionMode()">← 補正時刻の計算に戻る</button>
+    <h1 class="fkz" style="margin-top: 40px;">結果一覧</h1>
+    <div id="resultListContainer" style="margin-top: 30px;"></div>
+  </div>
+
+  <!-- 🧾 Information Center -->
+  <div id="informationPage" style="display:none; text-align:center; padding: 40px 16px;">
+    <button class="back-btn" onclick="backToLockScreen()">← 初期画面に戻る</button>
+    <h1 class="fkz" style="margin-top: 40px;">Information Center</h1>
+    <div id="informationContent" style="margin-top: 30px; text-align: left; max-width: 500px; margin-left: auto; margin-right: auto;">
+      <p>このアプリは <strong>H.Fukazu</strong> によって制作されました。</p>
+      <p>バージョン: <strong>v1.5.0</strong></p><br>
+
+      <h3 style="margin-top:24px;">## 著作権および利用規約 (Copyright and Usage Policy)</h3>
+      <p>本作品（ソフトウェア、コード、ドキュメント、および関連する全ての内容を含む）の著作権は、© 2025 H.Fukazu に帰属します。<br>*******© 2025 H.Fukazu. All Rights Reserved.*******</p><br>
+      <h3 style="margin-top:24px;"> 厳禁事項 (Strictly Prohibited)</h3>
+      <p>著作者からの書面による事前の明示的な許可なく、以下の行為を固く禁じます。</p>
+      <ul>
+        <li>無断転用、複製、改変、二次利用は禁止</li>
+        <li>ソースコードの全部または一部の無断転載および再配布の禁止</li>
+        <li>商業的な目的での利用禁止 (営利・非営利を問わず、対価を得る活動への利用)</li>
+        <li>本作品を基にした派生作品の作成および公開も禁止</li>
+      </ul>
+      <p>本作品は、著作権法によって最大限に保護されています。上記の禁止事項に違反した場合、法的な措置を講じる可能性があります。</p>
+    </div>
   </div>
 
   <script src="script.js" defer></script>

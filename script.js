@@ -1,8 +1,9 @@
-const currentVersion = "1.4.1";
+const currentVersion = "1.5.0";
 let lastError = null;
 let hasCalculated = false;
 let reverseMode = "toStandard";
 let hasCalculatedError = false;
+let resultHistory = [];
 
 function checkPass() {
   const inputField = document.getElementById("passcode");
@@ -65,7 +66,6 @@ document.addEventListener("DOMContentLoaded", function () {
   populateSeconds("reverseDisplaySeconds");
   populateErrorDropdowns();
 
-  // 自動計算トリガー（逆算モード）
   const reverseInputs = [
     "errorDays", "errorHours", "errorMinutes", "errorSeconds",
     "errorDirection", "reverseDisplayTime", "reverseDisplaySeconds"
@@ -167,7 +167,13 @@ function showCorrectionMode() {
 function backToModeSelect() {
   document.getElementById("errorMode").style.display = "none";
   document.getElementById("correctionMode").style.display = "none";
+  document.getElementById("resultListPage").style.display = "none";
   document.getElementById("modeSelect").style.display = "block";
+}
+
+function backToCorrectionMode() {
+  document.getElementById("resultListPage").style.display = "none";
+  document.getElementById("correctionMode").style.display = "block";
 }
 
 function calculateError() {
@@ -238,7 +244,6 @@ function switchToCorrectionMode() {
   document.getElementById("errorMode").style.display = "none";
   document.getElementById("correctionMode").style.display = "block";
 
-  // ✅ 秒セレクトの選択値を保持・復元
   const prevSeconds = document.getElementById("reverseDisplaySeconds").value;
   populateSeconds("reverseDisplaySeconds");
   if (prevSeconds !== "" && prevSeconds !== "秒" && prevSeconds !== "--") {
@@ -328,4 +333,113 @@ function handleReverseCalculation() {
     </p>
     <p style="color: var(--text-sub);">が${label}</p>
   `;
+
+  document.getElementById("addToListButton").style.display = "inline-block";
+  document.getElementById("showListLink").style.display = "block";
+
+  const result = {
+    error: { days, hours, minutes, seconds, direction },
+    mode: reverseMode,
+    base: baseTime,
+    result: resultTime
+  };
+  window.latestResult = result;
+}
+
+function addResultToList() {
+  const r = window.latestResult;
+  if (!r) return;
+
+  const key = `${r.error.days}-${r.error.hours}-${r.error.minutes}-${r.error.seconds}-${r.error.direction}`;
+  const group = resultHistory.find(g => g.key === key);
+  const baseStr = r.base.toISOString();
+  const resultStr = r.result.toISOString();
+
+  if (group) {
+    const exists = group.entries.some(e => e.base.toISOString() === baseStr && e.result.toISOString() === resultStr && e.mode === r.mode);
+    if (!exists) group.entries.push({ base: r.base, result: r.result, mode: r.mode });
+  } else {
+    resultHistory.push({
+      key,
+      error: r.error,
+      entries: [{ base: r.base, result: r.result, mode: r.mode }]
+    });
+  }
+
+  renderResultList();
+}
+
+function showResultList() {
+  document.getElementById("correctionMode").style.display = "none";
+  document.getElementById("resultListPage").style.display = "block";
+  renderResultList();
+}
+
+function renderResultList() {
+  const container = document.getElementById("resultListContainer");
+  container.innerHTML = "";
+
+  resultHistory.forEach(group => {
+    const { days, hours, minutes, seconds, direction } = group.error;
+    const errorText = `${days || 0}日${hours || 0}時間${minutes || 0}分${seconds || 0}秒（${direction === "late" ? "進み" : "遅れ" }）`;
+
+    const modes = { toStandard: [], toDisplay: [] };
+    group.entries.forEach(e => modes[e.mode].push(e));
+
+    ["toStandard", "toDisplay"].forEach(mode => {
+      if (modes[mode].length === 0) return;
+
+      const box = document.createElement("div");
+      box.className = "result-box";
+      box.style.backgroundColor = mode === "toStandard" ? "rgba(0,255,224,0.1)" : "rgba(255,0,170,0.1)";
+      box.style.borderRadius = "12px";
+      box.style.padding = "16px";
+      box.style.marginBottom = "24px";
+      box.style.boxShadow = "0 0 6px rgba(0,0,0,0.2)";
+      box.style.textAlign = "left";
+
+      const title = document.createElement("div");
+      title.innerHTML = `<strong>補正に使った誤差：</strong>${errorText}<br><strong>${mode === "toStandard" ? "表示時刻 → 補正時刻" : "探している時刻 → 表示時刻"}</strong>`;
+      title.style.marginBottom = "12px";
+      box.appendChild(title);
+
+      modes[mode].forEach((entry, idx) => {
+        const line = document.createElement("div");
+        const base = formatDate(entry.base);
+        const result = formatDate(entry.result);
+        line.innerHTML = `${base} → ${result} <button onclick="deleteResult('${group.key}', ${idx}, '${mode}')">削除</button>`;
+        line.style.marginBottom = "6px";
+        box.appendChild(line);
+      });
+
+      container.appendChild(box);
+    });
+  });
+}
+
+function deleteResult(key, index, mode) {
+  const group = resultHistory.find(g => g.key === key);
+  if (!group) return;
+  group.entries = group.entries.filter((e, i) => !(i === index && e.mode === mode));
+  renderResultList();
+}
+
+function formatDate(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  const h = String(date.getHours()).padStart(2, '0');
+  const min = String(date.getMinutes()).padStart(2, '0');
+  const s = String(date.getSeconds()).padStart(2, '0');
+  return `${y}/${m}/${d} ${h}:${min}:${s}`;
+}
+
+function showInformationPage() {
+  document.getElementById("lockScreen").style.display = "none";
+  document.getElementById("informationPage").style.display = "block";
+}
+
+function backToLockScreen() {
+  document.getElementById("informationPage").style.display = "none";
+  document.getElementById("lockScreen").style.display = "block";
 }

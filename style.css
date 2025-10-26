@@ -11,7 +11,6 @@
   --toggle-text: #fff;
 }
 
-/* 🌟 起動時フェードイン */
 .fade-in {
   animation: fadeIn 1.2s ease-in-out forwards;
   opacity: 0;
@@ -22,7 +21,6 @@
   }
 }
 
-/* 🌈 タイトル文字の上昇フェードイン */
 .rise-in {
   animation: riseFade 1.2s ease-out forwards;
   opacity: 0;
@@ -111,7 +109,6 @@ input, select {
   color: var(--text-main);
 }
 
-/* ✅ ボタンスタイル統一（復元＋ピンク対応） */
 .action-btn {
   background-color: var(--btn-bg);
   color: var(--btn-text);
@@ -181,7 +178,6 @@ input, select {
   margin: 20px 0;
 }
 
-/* ✅ エラーメッセージの高さ固定と余白調整 */
 #error {
   color: red;
   min-height: 1.2em;
@@ -208,7 +204,6 @@ input, select {
   min-width: 60px;
 }
 
-/* 🎯 誤差入力欄（日・時・分・秒）の枠サイズ調整用 */
 .unit-input input,
 .unit-input select {
   width: 50px;
@@ -253,7 +248,6 @@ input, select {
   padding-top: 60px;
 }
 
-/* 🎲 テンキーのスタイル（サイズ調整済み） */
 .keypad-grid {
   display: grid;
   grid-template-columns: repeat(3, 45px);
@@ -275,4 +269,24 @@ input, select {
 }
 .keypad-grid button:hover {
   background-color: rgba(0,255,224,0.2);
+}
+
+.show-list-link {
+  color: var(--accent);
+  font-size: 16px;
+  margin-top: 12px;
+  text-align: right;
+  cursor: pointer;
+}
+
+.info-link {
+  color: var(--accent);
+  font-size: 14px;
+  margin-top: 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.info-link:hover {
+  transform: scale(1.05);
 }
