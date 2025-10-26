@@ -20,7 +20,7 @@
 
   <style>
     @keyframes riseInLong {
-      0% { opacity: 0; transform: translateY20px); }
+      0% { opacity: 0; transform: translateY(20px); }
       100% { opacity: 1; transform: translateY(0); }
     }
     @keyframes riseInShort {
@@ -31,7 +31,7 @@
     .rise-in-short { animation: riseInShort 1s ease-out forwards; }
   </style>
 </head>
-<body>
+<body class="fade-in">
   <!-- 🔐 ロック画面 -->
   <div id="lockScreen">
     <h1 class="fkz rise-in-long">Time Regulus</h1>
@@ -148,14 +148,14 @@
   </div>
 
   <!-- 📋 結果一覧ページ -->
-  <div id="resultListPage" style="display:none; text-align:center; padding: 40px 16px;"><br><br>
+  <div id="resultListPage" style="display:none; text-align:center; padding: 40px 16px;"><br>
     <button class="back-btn" onclick="backToCorrectionMode()">← 補正時刻の計算に戻る</button>
     <h1 class="fkz" style="margin-top: 40px;">結果一覧</h1>
     <div id="resultListContainer" style="margin-top: 30px;"></div>
   </div>
 
   <!-- 🧾 Information Center -->
-  <div id="informationPage" style="display:none; text-align:center; padding: 12px8px;">
+  <div id="informationPage" style="display:none; text-align:center; padding: 40px 16px;">
     <button class="back-btn" onclick="backToLockScreen()">← 初期画面に戻る</button>
     <h1 class="fkz" style="margin-top: 40px;">Information Center</h1>
     <div id="informationContent" style="margin-top: 30px; text-align: left; max-width: 500px; margin-left: auto; margin-right: auto;">
