@@ -399,7 +399,7 @@ function renderResultList() {
       box.style.textAlign = "left";
 
       const title = document.createElement("div");
-      title.innerHTML = `<strong>補正に使った誤差：</strong>${errorText}<br><strong>${mode === "toStandard" ? "表示時刻 → 補正時刻" : "探している時刻 → 表示時刻"}</strong>`;
+      title.innerHTML = `<strong>誤差：</strong>${errorText}<br><strong>${mode === "toStandard" ? "表示時刻 → 補正時刻" : "探している時刻 → 表示時刻"}</strong>`;
       title.style.marginBottom = "12px";
       box.appendChild(title);
 
