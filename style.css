@@ -75,6 +75,13 @@ h1.fkz {
   margin-top: 40px;
 }
 
+.mode-card h2 {
+  color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
 .deep-green {
   background-color: var(--deep-green);
 }
