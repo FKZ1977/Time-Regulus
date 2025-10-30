@@ -443,3 +443,25 @@ function backToLockScreen() {
   document.getElementById("informationPage").style.display = "none";
   document.getElementById("lockScreen").style.display = "block";
 }
+
+// QRコード生成ライブラリを使う例
+document.addEventListener("DOMContentLoaded", function () {
+    // QRコードを生成するURL
+    const urlToEncode = "https://github.com/FKZ1977/Time-Regulus";
+
+    // QRコード表示領域を取得
+    const qrCodeContainer = document.getElementById("qrcode");
+
+    // QRコードを生成
+    QRCode.toCanvas(qrCodeContainer, urlToEncode, {
+        width: 200, // QRコードの幅
+        margin: 2,  // マージン
+        color: {
+            dark: "#000000", // 黒色
+            light: "#ffffff" // 白色
+        }
+    }, function (error) {
+        if (error) console.error(error);
+        console.log("QRコードを生成しました！");
+    });
+});
