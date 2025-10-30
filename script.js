@@ -45,7 +45,7 @@ function generateKeypad() {
 
 document.addEventListener("DOMContentLoaded", function () {
   if (localStorage.getItem("lastVersion") !== currentVersion) {
-    alert("Time Regulusが更新されました！");
+    alert("Time Regulusが更新されました！新しいバージョンをホーム画面に追加し直してください！");
     localStorage.setItem("lastVersion", currentVersion);
   }
 
