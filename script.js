@@ -719,7 +719,7 @@ function addResultToList() {
   
   // 成功メッセージ表示アニメーション
   const msg = document.getElementById("recordSuccessMessage");
-  msg.innerText = "結果一覧に追加しました";
+  msg.innerText = "追加しました";
   msg.style.display = 'inline-block';
   msg.classList.remove('fade-out');
   msg.classList.add('fade-in-out'); 
