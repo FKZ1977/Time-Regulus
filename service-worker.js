@@ -1,4 +1,4 @@
-const CACHE_NAME = "Time-Regulus-v1.5.1";
+const CACHE_NAME = "time-regulus-v1.6.0";
 const urlsToCache = [
   "./",
   "./index.html",
@@ -6,7 +6,8 @@ const urlsToCache = [
   "./script.js",
   "./manifest.json",
   "./icon-192.png",
-  "./icon-512.png"
+  "./icon-512.jpg",
+  "./QRCorde.PNG"
 ];
 
 // インストール時にキャッシュ
