@@ -1,19 +1,14 @@
 :root {
   --bg-dark: #0e0f11;
-  --bg-dark-navy: #151c27; /* 標準時刻が上の時の新しい背景色 */
   --card-bg: rgba(120, 110, 255, 0.38);
-  --accent: #00ffe0; /* 水色/メインカラー */
+  --accent: #00ffe0;
   --text-main: #e0e0e0;
   --text-sub: #999;
   --btn-bg: #00ffe0;
   --btn-text: #000;
   --deep-green: #134d33;
-  --toggle-bg: #ff00aa; /* ピンク */
+  --toggle-bg: #ff00aa;
   --toggle-text: #fff;
-  --error-late-color: #ff4d4d; /* 赤色 (進み) */
-  --error-early-color: #00ff80; /* 黄緑色 (遅れ) */
-  --result-standard-bg: rgba(0, 255, 224, 0.1);
-  --result-display-bg: rgba(255, 0, 170, 0.1);
 }
 
 .fade-in {
@@ -37,52 +32,6 @@
     transform: translateY(0);
   }
 }
-
-/* 新しいアニメーション */
-@keyframes riseInLong {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-@keyframes riseInShort {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-.rise-in-long { animation: riseInLong 1s ease-out forwards; }
-.rise-in-short { animation: riseInShort 1s ease-out forwards; }
-
-/* 入力フィールドスワップアニメーション */
-@keyframes slideUpOut {
-  to { transform: translateY(-100%); opacity: 0.2; }
-}
-@keyframes slideDownOut {
-  to { transform: translateY(100%); opacity: 0.2; }
-}
-@keyframes slideUpIn {
-  from { transform: translateY(100%); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-@keyframes slideDownIn {
-  from { transform: translateY(-100%); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-.animate-up-out { animation: slideUpOut 0.3s ease-in forwards; }
-.animate-down-out { animation: slideDownOut 0.3s ease-in forwards; }
-.animate-up-in { animation: slideUpIn 0.3s ease-out forwards; }
-.animate-down-in { animation: slideDownIn 0.3s ease-out forwards; }
-
-/* 記録成功メッセージのアニメーション */
-@keyframes fadeOut {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
-}
-
-.fade-in-out {
-    animation: fadeIn 0.1s ease-in forwards; /* 即座にフェードイン */
-}
-.fade-out {
-    animation: fadeOut 0.5s ease-out forwards; /* 0.5秒でフェードアウト */
-}
-
 
 body {
   margin: 0;
@@ -151,37 +100,12 @@ input[type="datetime-local"] {
   margin-top: 8px;
 }
 
-/* 誤差計算モードで標準時刻が上の時の「00秒」のスタイル */
-.seconds-fixed-00 {
-  background-color: var(--bg-dark-navy) !important; 
-  border: 1px solid var(--accent) !important;
-  color: var(--error-late-color) !important; /* 赤色文字 */
-  font-weight: bold;
-  pointer-events: none;
-  text-align: center;
-  box-shadow: none;
-  /* セレクトボックスの矢印を非表示 */
-  -webkit-appearance: none; 
-  -moz-appearance: none;    
-  appearance: none;         
-}
-
 #errorDirection {
   width: 160px;
   display: inline-block;
   margin-left: 8px;
+  color: red;
 }
-
-/* 誤差の方向の文字色 */
-.error-late { /* 進んでいる (late) は赤色 */
-    color: var(--error-late-color);
-    font-weight: bold;
-}
-.error-early { /* 遅れている (early) は黄緑色 */
-    color: var(--error-early-color);
-    font-weight: bold;
-}
-
 
 input, select {
   padding: 10px;
@@ -210,40 +134,29 @@ input, select {
 }
 
 .toggle-btn {
-  background-color: var(--btn-bg); /* 通常のボタンのデフォルト */
+  background-color: var(--btn-bg);
   color: var(--btn-text);
   box-shadow: 0 4px 12px rgba(0,255,224,0.3);
   border-radius: 8px;
   padding: 12px 24px;
   font-size: 16px;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.2s ease, background-color 0.3s ease;
 }
 .toggle-btn:hover {
-  transform: scale(1.05);
-}
-
-/* 1. 表示時刻 → 補正時刻 (toStandard) : 水色 */
-.toggle-btn.active-toggle {
-  background-color: var(--accent);
-  color: var(--btn-text);
-  box-shadow: 0 0 10px rgba(0, 255, 224, 0.5);
-  transform: scale(1);
-}
-.toggle-btn.active-toggle:hover {
   background-color: #00e6cc;
   transform: scale(1.05);
 }
 
-/* 2. 探している時刻 → 表示時刻 (toDisplay) : ピンク */
-.toggle-btn.active-toggle-pink {
+.toggle-btn.active-toggle {
   background-color: var(--toggle-bg);
   color: var(--toggle-text);
   box-shadow: 0 0 10px rgba(255, 0, 170, 0.5);
   transform: scale(1);
+  transition: transform 0.2s ease;
 }
-.toggle-btn.active-toggle-pink:hover {
-  background-color: var(--toggle-bg); /* ピンクのまま */
+.toggle-btn.active-toggle:hover {
+  background-color: var(--toggle-bg);
   transform: scale(1.05);
 }
 
@@ -383,49 +296,4 @@ input, select {
 }
 .info-link:hover {
   transform: scale(1.05);
-}
-
-/* 結果一覧のスタイル */
-.result-list-group-outer {
-    padding: 16px;
-    margin-bottom: 24px;
-    border: 2px solid var(--text-sub);
-    border-radius: 12px;
-    background-color: rgba(255, 255, 255, 0.03);
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-}
-
-.result-list-group-inner {
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 12px;
-    text-align: left;
-}
-
-.delete-btn {
-    background-color: #800000;
-    color: #fff;
-    border: none;
-    padding: 4px 8px;
-    font-size: 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-.delete-btn:hover {
-    background-color: #ff4d4d;
-}
-
-/* 成功メッセージ */
-.success-message {
-    color: var(--accent); 
-    font-weight: bold; 
-    font-size: 15px;
-    opacity: 0;
-    transition: opacity 0.1s ease-in, transform 0.1s ease-in;
-}
-
-/* Informationページの文字詰め */
-#informationContent p {
-    margin-bottom: 8px; /* 段落の間隔を狭める */
 }
