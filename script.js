@@ -48,7 +48,7 @@ function generateKeypad() {
 document.addEventListener("DOMContentLoaded", function () {
   // 起動時のポップアップ (修正: v1.5.4の内容に変更)
   if (localStorage.getItem("lastVersion") !== currentVersion) {
-    alert("Time RegulusはV1.6.0です！");
+    alert("Time RegulusはV1.6.1です！");
     localStorage.setItem("lastVersion", currentVersion);
   }
 
