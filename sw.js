@@ -1,75 +1,79 @@
+const CACHE_NAME = 'time-regulus-v3-3-3';
 
-const  CACHE_NAME  =  'time-regulus-v2-0-0' ; 
-
-// プリキャッシュするアセットのリスト。
-const  urlsToCache  =  [
-  './' ,  //index.html（ルートURL）
-  './index.html' 、
-  './QRcorde.PNG' ,  // QRコード画像
-  './register-sw.js'  // 登録スクリプト
-  //あと、外部CSSやJSを使う場合はここに追加
-] ;
+// プリキャッシュするアセットのリスト
+const urlsToCache = [
+  './',
+  './index.html',
+  './QRCorde.PNG',
+  './register-sw.js',
+  './favicon.ico',
+  './favicon-16x16.png',
+  './favicon-32x32.png',
+  './favicon-48x48.png',
+  './apple-touch-icon.png',
+  './icon-192.png',
+  './icon-512.png',
+  './icon-maskable-192.png',
+  './icon-maskable-512.png',
+  './manifest.json'
+];
 
 // インストールイベント：Service Workerのインストールとプリキャッシュ
-self.addEventListener ( 'install ' , (イベント) = > {   
-  イベント.waitUntil (​
-    キャッシュ. open ( CACHE_NAME )
-      . then ( (キャッシュ)  =>  {
-        console . log ( '[Service Worker] アセットを事前キャッシュしています:' ,  urlsToCache ) ;
-         キャッシュを返します。addAll ( urlsToCache ) 。catch ( error = > {  
-            console . error ( '[Service Worker] キャッシュに失敗しました:' ,  error ) ;
-        } ) ;
-      } ）
-      。then ( ( )  =>  self .skipWaiting ( ) ) //インストール後すぐに有効化 
-  ）;
-} ) ;
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => {
+        console.log('[Service Worker] アセットを事前キャッシュしています:', urlsToCache);
+        return cache.addAll(urlsToCache).catch((error) => {
+          console.error('[Service Worker] キャッシュに失敗しました:', error);
+        });
+      })
+      .then(() => self.skipWaiting())
+  );
+});
 
-// イベントをアクティブにする：古いキャッシュのクリア
-self.addEventListener ( ' activate' , (イベント) = > {   
-  イベント.waitUntil (​
-    キャッシュ.キー( ) .then ( ( cacheNames ) = > {  
-       Promise . allを返す(
-        キャッシュ名。マップ( (キャッシュ名)  =>  {
-          // 現在のキャッシュ名と異なるキャッシュを削除
-          if  (キャッシュ名 !==  CACHE_NAME )  {
-            console . log ( '[Service Worker] 古いキャッシュを削除しています:' ,  cacheName ) ;
-             キャッシュを返します。delete ( cacheName ) ;
+// アクティベートイベント：古いキャッシュのクリア
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('[Service Worker] 古いキャッシュを削除しています:', cacheName);
+            return caches.delete(cacheName);
           }
-        } ）
-      ）;
-    } ）
-  ）;
-  返却 自己。クライアント。請求（）;  // すぐにクライアントの制御を開始
-} ) ;
+        })
+      );
+    })
+  );
+  return self.clients.claim();
+});
 
 // fetch イベント：キャッシュ戦略（Cache First）
-self.addEventListener ( ' fetch ' , (イベント) = > {   
-  // GETリクエストのみを対象とする
-  if  (イベント.リクエスト.メソッド !==  'GET' )  return ;
+self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
 
-  イベント.respondWith (​
-    キャッシュ.一致(イベント.リクエスト)
-      . then ( (レスポンス)  =>  {
-        // キャッシュに応答があればそれを返す（キャッシュファースト）
-        if  (応答)  {
-           応答を返します。
+  event.respondWith(
+    caches.match(event.request)
+      .then((response) => {
+        if (response) {
+          return response;
         }
 
-        // キャッシュになければネットワークから取得し、結果をキャッシュしてから返す
-         フェッチを返す(イベント.リクエスト)
-          . then ( (レスポンス)  =>  {
-            if  ( !レスポンス || レスポンス.ステータス !==  200  || レスポンス.タイプ !==  'basic' )  {
-               応答を返します。
+        return fetch(event.request)
+          .then((response) => {
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
             }
 
-            const  responseToCache  =  response.clone ( ) ;​​
-            キャッシュ. open ( CACHE_NAME )
-              . then ( (キャッシュ)  =>  {
-                キャッシュ.put (イベント.リクエスト、responseToCache ) ;​ 
-              } ) ;
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME)
+              .then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
 
-             応答を返します。
-          } ) ;
-      } ）
-  ）;
-} ) ;
+            return response;
+          });
+      })
+  );
+});

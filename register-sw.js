@@ -1,8 +1,8 @@
 // Service Worker 登録ロジック
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    // Service Worker ファイル (sw.js) をルートディレクトリから登録
-    navigator.serviceWorker.register('/sw.js')
+    // Service Worker ファイル (sw.js) を相対パスから登録
+    navigator.serviceWorker.register('./sw.js')
       .then(registration => {
         console.log('Service Worker registered: ', registration.scope);
 
