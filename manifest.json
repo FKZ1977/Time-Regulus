@@ -1,6 +1,6 @@
 {
-  "name": "Regulus News",
-  "short_name": "RegulusNews",
+  "name": "RegulusNotice📢",
+  "short_name": "RegulusNotice📢",
   "description": "Time Regulus アップデートのお知らせ",
   "start_url": "./index.html",
   "display": "standalone",
@@ -8,14 +8,14 @@
   "theme_color": "#00ffe0",
   "icons": [
     {
-      "src": "android-chrome-192x192.png",
-      "sizes": "192x192",
+      "src": "android-chrome-512x512.png?v=20261031_04",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "android-chrome-512x512.png",
-      "sizes": "512x512",
+      "src": "android-chrome-192x192.png?v=20261031_04",
+      "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     }
