@@ -19,20 +19,20 @@
   <meta http-equiv="Expires" content="0">
   
   <!-- ★【重要】HTML更新時はここのバージョン番号を変更してください（例: 日付や 20261010_01 など）★ -->
-  <meta name="app-version" content="20261103_03">
+  <meta name="app-version" content="20261103_06">
    
   <!-- ファビコン・アプリアイコン設定 (Windows, Chrome, iPhone, Android対応) -->
-  <link rel="apple-touch-icon" sizes="512x512" href="apple-touch-icon.png?v=20261103_03">
-  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=20261103_03">
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=20261103_03">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=20261103_03">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=20261103_03">
-  <link rel="icon" type="image/x-icon" href="favicon.ico?v=20261103_03">
-  <link rel="manifest" href="manifest.json?v=20261103_03">
+  <link rel="apple-touch-icon" sizes="512x512" href="apple-touch-icon.png?v=20261103_06">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=20261103_06">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=20261103_06">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=20261103_06">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=20261103_06">
+  <link rel="icon" type="image/x-icon" href="favicon.ico?v=20261103_06">
+  <link rel="manifest" href="manifest.json?v=20261103_06">
 
   <!-- iOS Safari 共有シート（下から出るメニュー）で白枠なしの大きいアイコンを表示するための設定 -->
   <meta property="og:title" content="RegulusNotice📢">
-  <meta property="og:image" content="icon-512.png?v=20261103_03">
+  <meta property="og:image" content="icon-512.png?v=20261103_06">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="512">
   <meta property="og:image:height" content="512">
@@ -99,13 +99,22 @@
       box-shadow: 0 0 12px rgba(0, 255, 224, 0.4);
     }
     .fkz {
-      font-family: 'serif'; 
+      font-family: "Courier New", Courier, "Nimbus Mono PS", "Liberation Mono", monospace;
+      font-weight: bold;
+      letter-spacing: 0.02em;
       color: var(--accent);
       text-shadow: 0 0 15px rgba(0, 255, 224, 0.7);
       margin: 0;
-      font-size: 38px;
+      font-size: clamp(28px, 10vw, 38px);
+      white-space: nowrap;
       opacity: 0; 
       animation: fadeIn 2s forwards; 
+    }
+    .fkz-notice {
+      display: block;
+      text-align: center;
+      color: #ff6e7f;
+      text-shadow: 0 0 15px rgba(255, 110, 127, 0.7);
     }
     .subtitle {
       color: var(--text-sub);
@@ -222,7 +231,7 @@
       </select>
     </div>
 
-    <h1 class="fkz">Time Regulus</h1>
+    <h1 class="fkz">Time Regulus<span class="fkz-notice">Notice</span></h1>
     <!-- 以下の本文はJavaScript無効時の表示用です。実際の表示内容は下の多言語辞書（i18n_news）で管理しています -->
     <p class="subtitle" data-i18n="subtitle">安全性に関するお知らせ (2026/10/31)</p>
     
