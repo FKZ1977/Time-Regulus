@@ -2,19 +2,20 @@
   "name": "RegulusNotice📢",
   "short_name": "RegulusNotice📢",
   "description": "Time Regulus アップデートのお知らせ",
-  "start_url": "./index.html",
+  "start_url": "https://fkz1977.github.io/Time-Regulus/index.html",
+  "scope": "https://fkz1977.github.io/Time-Regulus/",
   "display": "standalone",
   "background_color": "#0e0f11",
   "theme_color": "#00ffe0",
   "icons": [
     {
-      "src": "android-chrome-512x512.png?v=20261106_06",
+      "src": "android-chrome-512x512.png?v=20261106_07",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "android-chrome-192x192.png?v=20261106_06",
+      "src": "android-chrome-192x192.png?v=20261106_07",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
