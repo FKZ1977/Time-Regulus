@@ -19,20 +19,20 @@
   <meta http-equiv="Expires" content="0">
   
   <!-- ★【重要】HTML更新時はここのバージョン番号を変更してください（例: 日付や 20261010_01 など）★ -->
-  <meta name="app-version" content="20261106_03">
+  <meta name="app-version" content="20261106_04">
    
   <!-- ファビコン・アプリアイコン設定 (Windows, Chrome, iPhone, Android対応) -->
-  <link rel="apple-touch-icon" sizes="512x512" href="apple-touch-icon.png?v=20261106_03">
-  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=20261106_03">
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=20261106_03">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=20261106_03">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=20261106_03">
-  <link rel="icon" type="image/x-icon" href="favicon.ico?v=20261106_03">
-  <link rel="manifest" href="manifest.json?v=20261106_03">
+  <link rel="apple-touch-icon" sizes="512x512" href="apple-touch-icon.png?v=20261106_04">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=20261106_04">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=20261106_04">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=20261106_04">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=20261106_04">
+  <link rel="icon" type="image/x-icon" href="favicon.ico?v=20261106_04">
+  <link rel="manifest" href="manifest.json?v=20261106_04">
 
   <!-- iOS Safari 共有シート（下から出るメニュー）で白枠なしの大きいアイコンを表示するための設定 -->
   <meta property="og:title" content="RegulusNotice📢">
-  <meta property="og:image" content="icon-512.png?v=20261106_03">
+  <meta property="og:image" content="icon-512.png?v=20261106_04">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="512">
   <meta property="og:image:height" content="512">
@@ -255,6 +255,8 @@
       </ol>
       <p>簡単に言えば、「ホームページ上に置かれた電卓」で時間の計算をしているだけです。<br>これからも安心してTime Regulusをご利用ください。m(_ _)m … H.Fukazu<br><a href="https://fkz1977.github.io/Time-Regulus-2/" target="_blank" class="url-link">https://fkz1977.github.io/Time-Regulus-2/</a></p>
     </div>
+
+    <img id="qrCodeImg" src="QRCorde-z.PNG" alt="Time Regulus QRコード" data-i18n-alt="qr_alt">
   </div>
 
   <script>
@@ -272,6 +274,7 @@
       ja: {
         subtitle: "安全性に関するお知らせ (2026/10/31)",
         notice_header: "...Time Regulus...<br>＜安心してご利用いただけます＞",
+        qr_alt: "Time Regulus QRコード",
         notice_msg: buildNoticeMsg(
           "…昨今、PHP等で作られたWebサービスへのサイバー攻撃による情報流出が社会問題となっていますが、Time Regulusにおける情報流出等はありません。安心してご利用ください。",
           "理由は次のとおりです。",
@@ -287,6 +290,7 @@
       en: {
         subtitle: "Safety Notice (2026/10/31)",
         notice_header: "...Time Regulus...<br>&lt;Safe to Use with Peace of Mind&gt;",
+        qr_alt: "Time Regulus QR Code",
         notice_msg: buildNoticeMsg(
           "...Recently, data leaks caused by cyberattacks on web services built with PHP and similar technologies have become a serious social issue. However, there are no data leaks or similar issues in Time Regulus, so please use it with peace of mind.",
           "Here is why:",
