@@ -6,31 +6,24 @@
   <title>【重要】Time Regulus 更新のお知らせ</title>
 
   <!-- ========================================================= -->
-  <!-- 1. iOS / iPadOS Safari 最適化設定（最優先配置） -->
-  <!-- 白枠縮小現象を完全に防止するため、高解像度 apple-touch-icon を極小タグより上位に配置 -->
-  <!-- ホーム画面追加時もSafariの枠（アドレスバー・ツールバー）を残すため capable は no に設定 -->
+  <!-- 1. アイコン・ファビコン設定（全OS公式規格準拠） -->
+  <!-- 高解像度 apple-touch-icon を最優先配置し、Safariでの白枠縮小化を防止 -->
+  <!-- ※ PWAスタンドアロン化（Safari枠の消失）を防ぐため、apple-mobile-web-app-capable および manifest は未指定にしています -->
   <!-- ========================================================= -->
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
   <link rel="apple-touch-icon" sizes="512x512" href="./icon-512.png">
-  <meta name="apple-mobile-web-app-capable" content="no">
   <meta name="apple-mobile-web-app-title" content="Time Regulus">
-
-  <!-- ========================================================= -->
-  <!-- 2. Android / ChromeOS / PWA 設定 (manifest.json) -->
-  <!-- display: browser により通常のブラウザ枠を維持して起動 -->
-  <!-- ========================================================= -->
-  <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#141414">
 
   <!-- ========================================================= -->
-  <!-- 3. Windows 10/11 / Edge タイル設定 -->
+  <!-- 2. Windows 10/11 / Edge タイル設定 -->
   <!-- ========================================================= -->
   <meta name="msapplication-TileColor" content="#141414">
   <meta name="msapplication-TileImage" content="./mstile-150x150.png">
   <meta name="msapplication-config" content="./browserconfig.xml">
 
   <!-- ========================================================= -->
-  <!-- 4. Mac Retina / 各種ブラウザ用 高解像度ファビコン (降順配置) -->
+  <!-- 3. Mac Retina / 各種ブラウザ用 高解像度ファビコン (降順配置) -->
   <!-- ========================================================= -->
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
   <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
@@ -40,7 +33,7 @@
   <link rel="shortcut icon" href="./favicon.ico">
 
   <!-- ========================================================= -->
-  <!-- 5. SNS / 共有メニュー用 OGPサムネイル設定 (Safari共有シート対策) -->
+  <!-- 4. SNS / 共有メニュー用 OGPサムネイル設定 (Safari共有シート対策) -->
   <!-- ========================================================= -->
   <meta property="og:title" content="Time Regulus">
   <meta property="og:description" content="Time Regulus 公式Webアプリケーション">
