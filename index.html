@@ -8,20 +8,19 @@
   <!-- ========================================================= -->
   <!-- 1. iOS / iPadOS Safari 最適化設定（最優先配置） -->
   <!-- 白枠縮小現象を完全に防止するため、高解像度 apple-touch-icon を極小タグより上位に配置 -->
+  <!-- ホーム画面追加時もSafariの枠（アドレスバー・ツールバー）を残すため capable は no に設定 -->
   <!-- ========================================================= -->
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
   <link rel="apple-touch-icon" sizes="512x512" href="./icon-512.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-capable" content="no">
   <meta name="apple-mobile-web-app-title" content="Time Regulus">
 
   <!-- ========================================================= -->
   <!-- 2. Android / ChromeOS / PWA 設定 (manifest.json) -->
-  <!-- 192px/512px の any および maskable (アダプティブアイコン) を完全定義 -->
+  <!-- display: browser により通常のブラウザ枠を維持して起動 -->
   <!-- ========================================================= -->
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#141414">
-  <meta name="mobile-web-app-capable" content="yes">
 
   <!-- ========================================================= -->
   <!-- 3. Windows 10/11 / Edge タイル設定 -->
@@ -154,7 +153,13 @@
 
     <h2>最新バージョンはこちらから</h2>
     <p>新しいURLから最新バージョンを開いてください。</p>
-    <a href="https://fkz1977.github.io/Time-Regulus-2/" target="_blank" class="url-link">https://fkz1977.github.io/Time-Regulus-2/</a>
+    <a href="https://fkz1977.github.io/Time-Regulus-2/" target="_blank" rel="noopener noreferrer" class="url-link">https://fkz1977.github.io/Time-Regulus-2/</a>
+
+    <!-- スタンドアロン（Safari枠なし）で開いてしまった場合の案内表示枠 -->
+    <div id="standalone-notice" style="display:none; margin: 15px auto; padding: 12px; background: rgba(255, 105, 180, 0.15); border: 1px dashed var(--pink-highlight); border-radius: 8px; font-size: 14px; text-align: left; line-height: 1.6;">
+      💡 <strong>Safariの枠が表示されていない場合：</strong><br>
+      画面右下の「Safariで開く（コンパスマーク）」をタップするか、上記のURLをコピーしてSafariのアドレスバーで開いてください。
+    </div>
 
     <img src="QRCorde-z.PNG" alt="新しいTime RegulusのQRコード">
 
@@ -173,5 +178,12 @@
   </div>
 
   <script src="register-sw.js"></script> 
+  <script>
+    // 過去にホーム画面追加済みでスタンドアロン（Safari枠なし）で起動している場合の検知
+    if (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches) {
+      var notice = document.getElementById('standalone-notice');
+      if (notice) notice.style.display = 'block';
+    }
+  </script>
 </body>
 </html>

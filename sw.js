@@ -1,4 +1,4 @@
-const CACHE_NAME = 'time-regulus-v2-0-1';
+const CACHE_NAME = 'time-regulus-v2-0-2';
 
 // プリキャッシュするアセットのリスト
 const urlsToCache = [
